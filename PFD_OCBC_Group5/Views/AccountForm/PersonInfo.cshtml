@@ -1,0 +1,107 @@
+﻿@model PFD_OCBC_Group5.Models.AccountFormModel
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="View">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NRIC" class="control-label"></label>
+                <input asp-for="NRIC" class="form-control" />
+                <span asp-validation-for="NRIC" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nationality" class="control-label"></label>
+                <input asp-for="Nationality" class="form-control" />
+                <span asp-validation-for="Nationality" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DOB" class="control-label"></label>
+                <input asp-for="DOB" class="form-control" />
+                <span asp-validation-for="DOB" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Occupation" class="control-label"></label>
+                <input asp-for="Occupation" class="form-control" />
+                <span asp-validation-for="Occupation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PR" class="control-label"></label>
+                <input asp-for="PR" class="form-control" />
+                <span asp-validation-for="PR" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <input asp-for="Gender" class="form-control" />
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelfEmployed" class="control-label"></label>
+                <input asp-for="SelfEmployed" class="form-control" />
+                <span asp-validation-for="SelfEmployed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NatureOfBusiness" class="control-label"></label>
+                <input asp-for="NatureOfBusiness" class="form-control" />
+                <span asp-validation-for="NatureOfBusiness" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HomeAddress" class="control-label"></label>
+                <input asp-for="HomeAddress" class="form-control" />
+                <span asp-validation-for="HomeAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostalCode" class="control-label"></label>
+                <input asp-for="PostalCode" class="form-control" />
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MailingAddress" class="control-label"></label>
+                <input asp-for="MailingAddress" class="form-control" />
+                <span asp-validation-for="MailingAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MailingPostalCode" class="control-label"></label>
+                <input asp-for="MailingPostalCode" class="form-control" />
+                <span asp-validation-for="MailingPostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MobileNumber" class="control-label"></label>
+                <input asp-for="MobileNumber" class="form-control" />
+                <span asp-validation-for="MobileNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HomeNumber" class="control-label"></label>
+                <input asp-for="HomeNumber" class="form-control" />
+                <span asp-validation-for="HomeNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountCreated" class="control-label"></label>
+                <input asp-for="AccountCreated" class="form-control" />
+                <span asp-validation-for="AccountCreated" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
