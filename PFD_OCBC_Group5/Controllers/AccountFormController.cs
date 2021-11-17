@@ -15,5 +15,10 @@ namespace PFD_OCBC_Group5.Controllers
         {
             return View();
         }
+
+        public ActionResult PersonInfo()
+        {
+            return View();
+        }
     }
 }
