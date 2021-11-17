@@ -1,0 +1,29 @@
+#main_box {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 0;
+}
+
+.inner_main_box {
+    text-align: center;
+    border-right: 0em black;
+    width: 30em;
+}
+
+.register-btn {
+    margin-top: 6em;
+    padding: 0.5em 8em 0.5em 8em;
+    width: 80%;
+}
+
+.vl {
+    border-left: 4px solid darkgray;
+    height: 150px;
+    margin: 3em 3em 3em 3em;
+  }
+  
+p {
+    font-size: 12px;
+    margin-top: 5px;
+}
