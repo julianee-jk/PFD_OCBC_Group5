@@ -34,7 +34,7 @@ namespace PFD_OCBC_Group5.Controllers
                 else
                 {
                     // Send error message not the same confirm
-
+                    ViewBag.MismatchNum = "Mismatched mobile numbers. Please check and enter again.";
                     return View(secondmobile);
                 }
             }
