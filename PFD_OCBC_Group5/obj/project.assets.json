@@ -6486,19 +6486,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\yanji\\.nuget\\packages\\": {}
+    "C:\\Users\\julia\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\yanji\\Desktop\\PFD Prototype\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj",
+      "projectUniqueName": "C:\\Users\\julia\\Source\\Repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj",
       "projectName": "PFD_OCBC_Group5",
-      "projectPath": "C:\\Users\\yanji\\Desktop\\PFD Prototype\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj",
-      "packagesPath": "C:\\Users\\yanji\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\yanji\\Desktop\\PFD Prototype\\PFD_OCBC_Group5\\obj\\",
+      "projectPath": "C:\\Users\\julia\\Source\\Repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj",
+      "packagesPath": "C:\\Users\\julia\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\julia\\Source\\Repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\yanji\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\julia\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6551,7 +6551,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

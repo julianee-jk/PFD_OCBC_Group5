@@ -71,12 +71,12 @@ namespace PFD_OCBC_Group5.Controllers
                 }
             }
 
-            if(flag)
+            if(!flag)
             {
-
+                return RedirectToAction("Validate", "SecondMobile");
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
            
         }
     }
