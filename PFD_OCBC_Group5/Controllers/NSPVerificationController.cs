@@ -86,7 +86,7 @@ namespace PFD_OCBC_Group5.Controllers
                     ViewData["VerificationMessage"] = ex.Message;
                 }
             }
-            return RedirectToAction("Index", "Awaiting");
+            return RedirectToAction("Validate", "SecondMobile");
         }
     }
 }

@@ -29,7 +29,14 @@
 <script type="text/javascript" language="javascript">
 
     function redirect_Page() {
-        window.open("/Singpass/SingpassLogin");
+        if (Context.Session.GetString("Type") == "Singpass") {
+            window.open("/Singpass/SingpassLogin");
+        }
+        else
+        {
+            window.open("/AccountForm/PersonInfo");
+        }
+
     }
     window.onload = redirect_Page()
 

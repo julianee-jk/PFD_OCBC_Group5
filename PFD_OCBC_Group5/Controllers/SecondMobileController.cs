@@ -40,8 +40,6 @@ namespace PFD_OCBC_Group5.Controllers
                     {
                         return RedirectToAction("Index", "Awaiting"); // TO:DO
                     }
-
-
                 }
                 else
                 {
