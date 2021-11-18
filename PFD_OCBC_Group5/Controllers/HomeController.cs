@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace PFD_OCBC_Group5.Controllers
 {
@@ -20,12 +21,19 @@ namespace PFD_OCBC_Group5.Controllers
 
         public IActionResult Index()
         {
+            HttpContext.Session.SetString("Status", "New");
             return View();
         }
 
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public ActionResult Continue()
+        {
+            HttpContext.Session.SetString("Status", "Continue");
+            return RedirectToAction("Validate", "SecondMobile");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
