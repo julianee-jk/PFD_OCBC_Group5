@@ -84,10 +84,8 @@ namespace PFD_OCBC_Group5.Controllers
                     AccountContext.Add(account);
                 }
 
-
-                    HttpContext.Session.SetString("FirstNRIC", account.NRIC);
-                    return RedirectToAction("Validate", "SecondMobile");
-                
+                HttpContext.Session.SetString("FirstNRIC", account.NRIC);
+                return RedirectToAction("Validate", "SecondMobile");
             }
 
             return RedirectToAction("Index", "Home");
@@ -131,8 +129,6 @@ namespace PFD_OCBC_Group5.Controllers
                     account.AccountCreated = "N";
                     AccountContext.Add(account);    
                 }
-
-                
 
                 JointAccountModel ja = new JointAccountModel();
                 ja.OwnerNRIC = HttpContext.Session.GetString("FirstNRIC");
