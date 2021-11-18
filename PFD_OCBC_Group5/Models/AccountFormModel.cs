@@ -26,7 +26,7 @@ namespace PFD_OCBC_Group5.Models
         [StringLength(100)]
         public string Occupation { get; set; }
 
-        [Display(Name = "Permenant Resident")]
+        [Display(Name = "Permanent Resident")]
         public string PR { get; set; }
 
         public string Gender { get; set; }

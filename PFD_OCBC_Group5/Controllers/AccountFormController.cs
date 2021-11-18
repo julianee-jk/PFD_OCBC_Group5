@@ -138,8 +138,8 @@ namespace PFD_OCBC_Group5.Controllers
                 ja.OwnerNRIC = HttpContext.Session.GetString("FirstNRIC");
                 ja.JointNRIC = account.NRIC;
                 ja.RelationshipToOwner = testing;
-                JointAccountContext.Add(ja);
-                return RedirectToAction("Index", "JointAccount");
+                ja.AccountNumber = JointAccountContext.Add(ja);
+                return RedirectToAction("Index", "JointAccount", new { jointAccount = ja});
 
             }
 
