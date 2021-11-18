@@ -142,8 +142,6 @@ namespace PFD_OCBC_Group5.Controllers
                     AccountContext.Add(account);    
                 }
 
-                
-
                 JointAccountModel ja = new JointAccountModel();
                 ja.OwnerNRIC = HttpContext.Session.GetString("FirstNRIC");
                 ja.JointNRIC = account.NRIC;

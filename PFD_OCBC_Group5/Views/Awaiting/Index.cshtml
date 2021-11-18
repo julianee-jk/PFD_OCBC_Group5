@@ -10,7 +10,17 @@
     <a asp-controller="JointAccount" asp-action="Index">
         <img src="/images/loader.gif" />
     </a>
-    <h2>Waiting for Second Applicant to finish</h2>
+
+    @if (Context.Session.GetString("Type") == "Singpass")
+    {
+        <h2>Waiting for Second Applicant to Finish</h2>
+    }
+    else
+    {
+        <h2>Thank you for completing the form! Please wait for the second joint account holder to
+            complete his/her application. Once complete, it will take a few days for us to verify your application!
+            An email will be sent to you once the application process is verified. Thank you for your understanding!</h2>
+    }
 </div>
 
 <link rel="stylesheet" href="~/css/awaiting.css" />

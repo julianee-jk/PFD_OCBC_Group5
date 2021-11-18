@@ -6,6 +6,15 @@
     margin-top: 130px;
 }
 
+.loader h2 {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    font-size: 25px;
+    line-height: 50px;
+}
+
 .loader img {
     width: 150px;
     height: 150px;

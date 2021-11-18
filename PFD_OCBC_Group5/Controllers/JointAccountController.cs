@@ -17,9 +17,21 @@ namespace PFD_OCBC_Group5.Controllers
         // Retrieve OwnerNRIC, JointNRIC and Relationship through TempData passing
         private AccountDAL AccountContext = new AccountDAL();
         private JointAccountDAL JointAccountContext = new JointAccountDAL();
-        public ActionResult Index(JointAccountModel jointAccount)
+        public ActionResult Index(JointAccountView jointAccount)
         {
-            return View(jointAccount);
+            JointAccountModel ja = new JointAccountModel();
+            ja.OwnerNRIC = HttpContext.Session.GetString("FirstNRIC");
+            ja.JointNRIC = HttpContext.Session.GetString("SecondNRIC");
+            ja.RelationshipToOwner = HttpContext.Session.GetString("SPRelationship");
+            ja.AccountNumber = (int)HttpContext.Session.GetInt32("AccountNum");
+
+            JointAccountView jaView = new JointAccountView();
+            jaView.firstName = AccountContext.GetApplicantInfo(ja.OwnerNRIC).Name;
+            jaView.secondName = AccountContext.GetApplicantInfo(ja.JointNRIC).Name;
+
+            jaView.ja = ja;
+
+            return View(jaView);
         }
 
         [HttpPost]
@@ -61,8 +73,6 @@ namespace PFD_OCBC_Group5.Controllers
                     AccountContext.Add(account);
                 }
 
-
-
                 JointAccountModel ja = new JointAccountModel();
                 ja.OwnerNRIC = HttpContext.Session.GetString("FirstNRIC");
                 ja.JointNRIC = account.NRIC;
@@ -73,12 +83,13 @@ namespace PFD_OCBC_Group5.Controllers
                 jaView.firstName = AccountContext.GetApplicantInfo(ja.OwnerNRIC).Name;
                 jaView.secondName = AccountContext.GetApplicantInfo(ja.JointNRIC).Name;
 
-             
-
                 jaView.ja = ja;
 
-                return View(jaView);
+                HttpContext.Session.SetString("SecondNRIC", account.NRIC);
+                HttpContext.Session.SetString("SPRelationship", testing);
+                HttpContext.Session.SetInt32("AccountNum", ja.AccountNumber);
 
+                return View(jaView);
             }
 
             return RedirectToAction("Index", "Home");
