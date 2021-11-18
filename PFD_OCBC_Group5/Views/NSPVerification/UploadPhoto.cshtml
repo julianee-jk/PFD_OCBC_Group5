@@ -1,0 +1,69 @@
+﻿@model PFD_OCBC_Group5.Models.NSPVerification
+
+@{
+    ViewData["Title"] = "NSPVerification";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="~/js/nspverification.js"></script>
+<h3 style="margin-top: 3em">Verification</h3>
+<hr />
+<div id="main_box">
+
+    <form asp-action="UploadPhoto" enctype="multipart/form-data">
+
+        <input hidden asp-for="NRIC" readonly class="form-control" />
+        <img id="output" src="/images/profile_icon.png" width="100" height="100">
+        <input name="photo" type="file" accept="image/*" onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])">
+
+        <div id="verification-id-box">
+            <h2>Verification Code</h2>
+            <b id="verification-id">Verification Code</b>
+        </div>
+
+        <input hidden asp-for="VerificationCode" readonly class="form-control" />
+        <input hidden asp-for="VerificationDate" readonly class="form-control" />
+
+        <input type="submit" class="btn btn-outline-primary" />
+    </form>
+
+    <!-- Button trigger modal -->
+    <div style="margin-top: 2em;">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#instructions-modal">
+            Instructions Here
+        </button>
+    </div>
+
+    <!-- Scrollable modal -->
+    <div class="modal" id="instructions-modal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Verification Instructions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        1) Write down generated code given below and today's date on a piece of A4 size paper.<br><br>
+                        2) Take a picture of yourself along with the paper and identification card.
+                    </p><br>
+                    <div id="instructions_image_box">
+                        <h6>Example Image</h6>
+                        <img src="/images/instruction_image.png" alt="instruction_image" width="180" height="300">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<link href="verification.css" rel="stylesheet">
+

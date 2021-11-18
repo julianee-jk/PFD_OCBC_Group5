@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Index";
+    ViewData["Type"] = Context.Session.GetString("Type");
 }
 
 <head>
@@ -28,8 +29,17 @@
 
 <script type="text/javascript" language="javascript">
 
+    var type = '@ViewData["Type"]';
+
     function redirect_Page() {
-        window.open("/Singpass/SingpassLogin");
+        if (type == "Singpass") {
+            window.open("/Singpass/SingpassLogin");
+        }
+        else
+        {
+            window.open("/AccountForm/PersonInfo");
+        }
+
     }
     window.onload = redirect_Page()
 

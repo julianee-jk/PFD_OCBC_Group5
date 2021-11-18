@@ -1,0 +1,57 @@
+#main_box {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 5em;
+    flex-flow: wrap;
+}
+
+#main_box_line {
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    width: 40em;
+    padding-bottom: 4em;
+    border-bottom: 3px solid black;
+}
+
+#verification-id-box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    /* background-color: blue; */
+    margin: 2em 0 2em 0;
+    flex-direction: column;
+}
+
+#verification-id {
+    color: red;
+    font-size: 24px;
+}
+
+#upload_img_box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 2em;
+}
+
+#myImg {
+    width: 250px;
+    height: 250px;
+    border: 1px solid black;
+}
+
+#instructions-modal {
+    margin-top: 2em;
+    pointer-events: none;
+    user-select: none;
+}
+
+#instructions_image_box {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

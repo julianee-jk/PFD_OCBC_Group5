@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using PFD_OCBC_Group5.DAL;
 using PFD_OCBC_Group5.Models;
+using System.IO;
 
 namespace PFD_OCBC_Group5.Controllers
 {
@@ -14,7 +15,7 @@ namespace PFD_OCBC_Group5.Controllers
         private NSPVerificationDAL NSPVerificationContext = new NSPVerificationDAL();
 
         // GET: NSPVerificationController
-        public ActionResult Index()
+        public ActionResult UploadPhoto()
         {
             return View();
         }
@@ -46,21 +47,46 @@ namespace PFD_OCBC_Group5.Controllers
             }
         }
 
-        //public ActionResult UploadFile(int id)
-        //{
-        //    if ((HttpContext.Session.GetString("Role") == null) ||
-        //       (HttpContext.Session.GetString("Role") != "Competitor"))
-        //    {
-        //        return RedirectToAction("Index", "Home");
-        //    }
-        //    int competitorid = (int)HttpContext.Session.GetInt32("CompetitorID");
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadPhoto(NSPVerification verification)
+        {
+            if (verification.FileUpload != null &&
+            verification.FileUpload.Length > 0)
+            {
+                try
+                {
+                    // Find the filename extension of the file to be uploaded.
+                    string fileExt = Path.GetExtension(
 
-        //    //NSPVerification verification = NSPVerificationContext.(TODO: Whatever the function name is;
+                    verification.FileUpload.FileName);
+                    // Rename the uploaded file with the user's NRIC.
+                    string uploadedFile = "NSPVerification_" + verification.NRIC + fileExt;
 
-
-        //    return View(verification);
-
-
-        //}
+                    // Get the complete path to the images folder in server
+                    string savePath = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot/images/nsp_files", uploadedFile);
+                    // Upload the file to server
+                    using (var fileSteam = new FileStream(
+                    savePath, FileMode.Create))
+                    {
+                        await verification.FileUpload.CopyToAsync(fileSteam);
+                    }
+                    verification.VerificationImage = uploadedFile;
+                    ViewData["VerificationMessage"] = "File uploaded successfully.";
+                }
+                catch (IOException)
+                {
+                    //File IO error, could be due to access rights denied
+                    ViewData["VerificationMessage"] = "File uploading fail!";
+                }
+                catch (Exception ex) //Other type of error
+                {
+                    ViewData["VerificationMessage"] = ex.Message;
+                }
+            }
+            return RedirectToAction("Validate", "SecondMobile");
+        }
     }
 }

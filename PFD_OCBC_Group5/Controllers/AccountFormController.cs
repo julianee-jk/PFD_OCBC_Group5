@@ -26,7 +26,9 @@ namespace PFD_OCBC_Group5.Controllers
 
         public ActionResult PersonInfo()
         {
-            return View();
+            AccountFormModel account = new AccountFormModel();
+            account.DOB = DateTime.Now;
+            return View(account);
         }
 
         [HttpPost]
@@ -83,15 +85,25 @@ namespace PFD_OCBC_Group5.Controllers
             {
                 if (AccountContext.AccountExists(account.NRIC))
                 {
-                    AccountContext.Update(account);
+                    return RedirectToAction("Index", "Home"); // TO:DO - Prompt error saying NRIC exists in DB.
                 }
                 else
                 {
                     AccountContext.Add(account);
                 }
 
-                HttpContext.Session.SetString("FirstNRIC", account.NRIC);
-                return RedirectToAction("Validate", "SecondMobile");
+                if (HttpContext.Session.GetString("Type") == "Singpass")
+                {
+                    HttpContext.Session.SetString("FirstNRIC", account.NRIC);
+                    return RedirectToAction("Validate", "SecondMobile");
+                }
+                else
+                {
+                    HttpContext.Session.SetString("FirstNRIC", account.NRIC);
+                    return RedirectToAction("UploadPhoto", "NSPVerification");
+                }
+
+                
             }
 
             return RedirectToAction("Index", "Home");
