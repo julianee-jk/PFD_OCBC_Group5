@@ -30,8 +30,18 @@ namespace PFD_OCBC_Group5.Controllers
                 {
                     HttpContext.Session.SetString("Applicant", "Second");
                     // Send SMS here (TO:DO)
-                    //Redirect user to Awaiting/Index page
-                    return RedirectToAction("Index", "Awaiting");
+
+                    if (HttpContext.Session.GetString("Type") == "Singpass")
+                    {
+                        //Redirect user to Awaiting/Index page
+                        return RedirectToAction("Index", "Awaiting");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Awaiting"); // TO:DO
+                    }
+
+
                 }
                 else
                 {
