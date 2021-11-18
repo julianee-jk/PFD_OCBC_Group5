@@ -6,9 +6,9 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="PersonInfo" id="account">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form asp-action="PersonInfo" id="account">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="segmented-row">
             <div class="form-group">
                 <label asp-for="NRIC" class="control-label"></label>
                 <input asp-for="NRIC" class="form-control" required />
@@ -19,21 +19,22 @@
                 <input asp-for="Name" class="form-control" required />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-
-            <div class="form-group">
-                <label asp-for="Salutation" class="control-label"></label>
-                <br />
-                <input type="radio" id="s-dr" name="salutation" value="Dr" checked="true">
-                <label for="s-dr">Dr</label><br>
-                <input type="radio" id="s-mr" name="salutation" value="Mr">
-                <label for="s-mr">Mr</label><br>
-                <input type="radio" id="s-mrs" name="salutation" value="Mrs">
-                <label for="s-mrs">Mrs</label><br>
-                <input type="radio" id="s-miss" name="salutation" value="Miss">
-                <label for="s-miss">Miss</label><br>
-                <input type="radio" id="s-mdm" name="salutation" value="Mdm">
-                <label for="s-mdm">Mdm</label><br>
-            </div>
+        </div>
+        <div class="form-group test">
+            <label asp-for="Salutation" class="control-label">Salutation: </label>
+            <br />
+            <input type="radio" class="radiobtn" id="s-dr" name="salutation" value="Dr" checked="true">
+            <label for="s-dr">Dr</label><br>
+            <input type="radio" class="radiobtn" id="s-mr" name="salutation" value="Mr">
+            <label for="s-mr">Mr</label><br>
+            <input type="radio" class="radiobtn" id="s-mrs" name="salutation" value="Mrs">
+            <label for="s-mrs">Mrs</label><br>
+            <input type="radio" class="radiobtn" id="s-miss" name="salutation" value="Miss">
+            <label for="s-miss">Miss</label><br>
+            <input type="radio" class="radiobtn" id="s-mdm" name="salutation" value="Mdm">
+            <label for="s-mdm">Mdm</label><br>
+        </div>
+        <div class="segmented-row">
             <div class="form-group">
                 <label asp-for="Nationality" class="control-label"></label>
                 <input asp-for="Nationality" class="form-control" required />
@@ -41,9 +42,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="DOB" class="control-label"></label>
-                <input asp-for="DOB" class="form-control" required />
+                <input asp-for="DOB" class="form-control" placeholder="" required />
                 <span asp-validation-for="DOB" class="text-danger"></span>
             </div>
+        </div>
+        <div class="segmented-row">
             <div class="form-group">
                 <label asp-for="Occupation" class="control-label"></label>
                 <input asp-for="Occupation" class="form-control" />
@@ -52,38 +55,56 @@
             <div class="form-group">
                 <label asp-for="PR" class="control-label"></label>
                 <br />
-                <input type="radio" id="pr-y" name="pr" value="Y" checked="true">
-                <label for="pr-y">Yes</label><br>
-                <input type="radio" id="pr-n" name="pr" value="N">
-                <label for="pr-n">No</label><br>
+                <div class="shortradiobtn">
+                    <input type="radio" class="radiobtn" id="pr-y" name="pr" value="Y" checked="true">
+                    <label for="pr-y">Yes</label><br>
+                    <input type="radio" class="radiobtn" id="pr-n" name="pr" value="N">
+                    <label for="pr-n">No</label><br>
+                </div>
             </div>
+        </div>
+        <div class="segmented-row">
             <div class="form-group">
                 <label asp-for="Gender" class="control-label"></label>
                 <br />
-                <input type="radio" id="gender-m" name="gender" value="M" checked="true">
-                <label for="gender-m">Male</label><br>
-                <input type="radio" id="gender-f" name="gender" value="F">
-                <label for="gender-f">Female</label><br>
+                <div class="shortradiobtn">
+                    <input type="radio" class="radiobtn" id="gender-m" name="gender" value="M" checked="true">
+                    <label for="gender-m">Male</label><br>
+                    <input type="radio" class="radiobtn" id="gender-f" name="gender" value="F">
+                    <label for="gender-f">Female</label><br>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="SelfEmployed" class="control-label"></label>
                 <br />
-                <input type="radio" id="SE-y" name="selfEmployed" value="Y" onclick="show();">
-                <label for="SE-y">Yes</label><br>
-                <input type="radio" id="SE-n" name="selfEmployed" value="N" onclick="hide();" checked="true">
-                <label for="SE-n">No</label><br>
+                <div class="shortradiobtn">
+                    <input type="radio" class="radiobtn" id="SE-y" name="selfEmployed" value="Y" onclick="show();">
+                    <label for="SE-y">Yes</label><br>
+                    <input type="radio" class="radiobtn" id="SE-n" name="selfEmployed" value="N" onclick="hide();" checked="true">
+                    <label for="SE-n">No</label><br>
+                </div>
             </div>
-
-            <div class="form-group" id="natureBusiness" style="display: none">
+        </div>
+        <div class="segmented-row">
+            <div class="form-group form-group-special" id="natureBusiness" style="display: none">
                 <label asp-for="NatureOfBusiness" class="control-label"></label>
                 <input id="natureBusinessInput" asp-for="NatureOfBusiness" class="form-control" />
                 <span asp-validation-for="NatureOfBusiness" class="text-danger"></span>
             </div>
+        </div>
+        <div class="segmented-row">
             <div class="form-group">
                 <label asp-for="HomeAddress" class="control-label"></label>
                 <input asp-for="HomeAddress" class="form-control" />
                 <span asp-validation-for="HomeAddress" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="segmented-row">
             <div class="form-group">
                 <label asp-for="PostalCode" class="control-label"></label>
                 <input asp-for="PostalCode" class="form-control" />
@@ -92,11 +113,15 @@
             <div class="form-group">
                 <span class="control-label">Use Home Address as Mailing Address?</span>
                 <br />
-                <input type="radio" id="ma-y" name="ma" value="Y" onclick="hideMA();">
-                <label for="ma-y">Yes</label><br>
-                <input type="radio" id="ma-n" name="ma" value="N" onclick="showMA();" checked="true">
-                <label for="ma-n">No</label><br>
+                <div class="shortradiobtn">
+                    <input type="radio" class="radiobtn" id="ma-y" name="ma" value="Y" onclick="hideMA();">
+                    <label for="ma-y">Yes</label><br>
+                    <input type="radio" class="radiobtn" id="ma-n" name="ma" value="N" onclick="showMA();" checked="true">
+                    <label for="ma-n">No</label><br>
+                </div>
             </div>
+        </div>
+        <div class="segmented-row">
             <div class="form-group" id="mailAddr">
                 <label asp-for="MailingAddress" class="control-label"></label>
                 <input id="mailAddrInput" asp-for="MailingAddress" class="form-control" />
@@ -107,11 +132,8 @@
                 <input id="mailPostalInput" asp-for="MailingPostalCode" class="form-control" />
                 <span asp-validation-for="MailingPostalCode" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+        </div>
+        <div class="segmented-row">
             <div class="form-group">
                 <label asp-for="MobileNumber" class="control-label"></label>
                 <input asp-for="MobileNumber" class="form-control" required />
@@ -122,20 +144,19 @@
                 <input asp-for="HomeNumber" class="form-control" />
                 <span asp-validation-for="HomeNumber" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <button type="submit" asp-action="Saveme">Submit to another page</button>
-            </div>
-        </form>
-    </div>
+        </div>
+        <div class="buttons">
+            <input type="submit" value="Save" class="buttonstyle" />
+            <button type="submit" class="buttonstyle" asp-action="saveme">Submit</button>
+        </div>
+    </form>
 </div>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
-<script type="text/javascript" language="javascript">
-    function show() {
+<script type="text/javascript" language="javascript">function show() {
         document.getElementById("natureBusiness").style.display = "block";
         document.getElementById("natureBusinessInput").required = true;
     }
@@ -156,5 +177,5 @@
         document.getElementById("mailPostal").style.display = "none";
         document.getElementById("mailAddrInput").required = false;
         document.getElementById("mailPostalInput").required = false;
-    }
-</script>
+    }</script>
+<link rel="stylesheet" href="/css/PersonInfo.css" />
