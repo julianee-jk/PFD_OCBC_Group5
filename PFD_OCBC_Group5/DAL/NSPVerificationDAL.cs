@@ -6,6 +6,7 @@ using PFD_OCBC_Group5.Models;
 using System.IO;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
 
 namespace PFD_OCBC_Group5.DAL
 {
@@ -22,7 +23,7 @@ namespace PFD_OCBC_Group5.DAL
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json");
             Configuration = builder.Build();
-            string strConn = Configuration.GetConnectionString("CJPConnectionString");
+            string strConn = Configuration.GetConnectionString("FormConnectionString");
             //Instantiate a SqlConnection object with the
             //Connection String read.
             conn = new SqlConnection(strConn);
@@ -30,6 +31,7 @@ namespace PFD_OCBC_Group5.DAL
 
         public string Add(NSPVerification verification)
         {
+
             SqlCommand cmd = conn.CreateCommand();
 
             cmd.CommandText = @"INSERT INTO AccountVerification (NRIC, ImageFile, VerificationCode, DateUploaded)
@@ -43,7 +45,7 @@ namespace PFD_OCBC_Group5.DAL
 
             conn.Open();
 
-            verification.NRIC = (string)cmd.ExecuteScalar();
+            cmd.ExecuteScalar();
 
             conn.Close();
 

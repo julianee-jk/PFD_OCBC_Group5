@@ -26,6 +26,6 @@ namespace PFD_OCBC_Group5.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd H:mm}")]
         public DateTime VerificationDate { get; set; }
 
-        public IFormFile FileUpload { get; set; }
+
     }
 }

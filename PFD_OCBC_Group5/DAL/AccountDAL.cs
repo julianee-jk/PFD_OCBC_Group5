@@ -60,24 +60,6 @@ VALUES(@nric, @name, @salutation, @nationality, @dob, @occupation, @pr, @gender,
             cmd.Parameters.AddWithValue("@homeNumber", account.HomeNumber ?? (object)DBNull.Value);
             cmd.Parameters.AddWithValue("@accountCreated", account.AccountCreated);
 
-            Debug.WriteLine(account.NRIC);
-            Debug.WriteLine(account.Name);
-            Debug.WriteLine(account.Salutation);
-            Debug.WriteLine(account.Nationality);
-            Debug.WriteLine(account.DOB);
-            Debug.WriteLine(account.Occupation);
-            Debug.WriteLine(account.PR);
-            Debug.WriteLine(account.Gender);
-            Debug.WriteLine(account.SelfEmployed);
-            Debug.WriteLine(account.NatureOfBusiness);
-            Debug.WriteLine(account.HomeAddress);
-            Debug.WriteLine(account.PostalCode);
-            Debug.WriteLine(account.MailingAddress);
-            Debug.WriteLine(account.MailingPostalCode);
-            Debug.WriteLine(account.Email);
-            Debug.WriteLine(account.MobileNumber);
-            Debug.WriteLine(account.HomeNumber);
-            Debug.WriteLine(account.AccountCreated);
 
 
 

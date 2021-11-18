@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using PFD_OCBC_Group5.DAL;
 using PFD_OCBC_Group5.Models;
 using System.IO;
+using System.Diagnostics;
 
 namespace PFD_OCBC_Group5.Controllers
 {
@@ -49,17 +50,24 @@ namespace PFD_OCBC_Group5.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UploadPhoto(NSPVerification verification)
+        public async Task<IActionResult> UploadPhoto(NSPVerification verification, IFormFile photo )
         {
-            if (verification.FileUpload != null &&
-            verification.FileUpload.Length > 0)
+
+            verification.NRIC = HttpContext.Session.GetString("FirstNRIC");
+            verification.VerificationDate = DateTime.Now;
+            
+
+            
+
+            if (photo != null &&
+            photo.Length > 0)
             {
                 try
                 {
                     // Find the filename extension of the file to be uploaded.
                     string fileExt = Path.GetExtension(
 
-                    verification.FileUpload.FileName);
+                    photo.FileName);
                     // Rename the uploaded file with the user's NRIC.
                     string uploadedFile = "NSPVerification_" + verification.NRIC + fileExt;
 
@@ -71,9 +79,14 @@ namespace PFD_OCBC_Group5.Controllers
                     using (var fileSteam = new FileStream(
                     savePath, FileMode.Create))
                     {
-                        await verification.FileUpload.CopyToAsync(fileSteam);
+                        await photo.CopyToAsync(fileSteam);
                     }
                     verification.VerificationImage = uploadedFile;
+                    
+
+
+                    NSPVerificationContext.Add(verification);
+
                     ViewData["VerificationMessage"] = "File uploaded successfully.";
                 }
                 catch (IOException)
@@ -86,6 +99,8 @@ namespace PFD_OCBC_Group5.Controllers
                     ViewData["VerificationMessage"] = ex.Message;
                 }
             }
+        
+
             return RedirectToAction("Validate", "SecondMobile");
         }
     }

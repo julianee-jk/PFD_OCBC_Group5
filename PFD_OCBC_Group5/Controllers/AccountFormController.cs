@@ -85,10 +85,12 @@ namespace PFD_OCBC_Group5.Controllers
             {
                 if (AccountContext.AccountExists(account.NRIC))
                 {
-                    return RedirectToAction("Index", "Home"); // TO:DO - Prompt error saying NRIC exists in DB.
+                    AccountContext.Update(account);
+                   
                 }
                 else
                 {
+                    account.AccountCreated = "N";
                     AccountContext.Add(account);
                 }
 

@@ -21,7 +21,7 @@
             <b id="verification-id">Verification Code</b>
         </div>
 
-        <input hidden asp-for="VerificationCode" readonly class="form-control" />
+        <input id="code" asp-for="VerificationCode" readonly class="form-control" />
         <input hidden asp-for="VerificationDate" readonly class="form-control" />
 
         <input type="submit" class="btn btn-outline-primary" />
