@@ -12,6 +12,9 @@ namespace PFD_OCBC_Group5.Models
         [StringLength(200)]
         public string Name { get; set; }
 
+        [StringLength(3)]
+        public string Salutation { get; set; }
+
         [StringLength(100)]
         public string Nationality { get; set; }
 

@@ -35,6 +35,7 @@ namespace PFD_OCBC_Group5.Controllers
 
             if (AccountContext.AccountExists(account.NRIC))
             {
+                AccountContext.Update(account);
                 return RedirectToAction("Index", "Home");
             }
             else
