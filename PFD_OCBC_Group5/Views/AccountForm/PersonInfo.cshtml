@@ -19,6 +19,21 @@
                 <input asp-for="Name" class="form-control" required />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Salutation" class="control-label"></label>
+                <br />
+                <input type="radio" id="s-dr" name="salutation" value="Dr" checked="true">
+                <label for="s-dr">Dr</label><br>
+                <input type="radio" id="s-mr" name="salutation" value="Mr">
+                <label for="s-mr">Mr</label><br>
+                <input type="radio" id="s-mrs" name="salutation" value="Mrs">
+                <label for="s-mrs">Mrs</label><br>
+                <input type="radio" id="s-miss" name="salutation" value="Miss">
+                <label for="s-miss">Miss</label><br>
+                <input type="radio" id="s-mdm" name="salutation" value="Mdm">
+                <label for="s-mdm">Mdm</label><br>
+            </div>
             <div class="form-group">
                 <label asp-for="Nationality" class="control-label"></label>
                 <input asp-for="Nationality" class="form-control" required />
@@ -36,26 +51,32 @@
             </div>
             <div class="form-group">
                 <label asp-for="PR" class="control-label"></label>
-                <input asp-for="PR" class="form-control" />
-                <span asp-validation-for="PR" class="text-danger"></span>
+                <br />
+                <input type="radio" id="pr-y" name="pr" value="Y" checked="true">
+                <label for="pr-y">Yes</label><br>
+                <input type="radio" id="pr-n" name="pr" value="N">
+                <label for="pr-n">No</label><br>
             </div>
             <div class="form-group">
                 <label asp-for="Gender" class="control-label"></label>
-                <input asp-for="Gender" class="form-control" />
-                <span asp-validation-for="Gender" class="text-danger"></span>
+                <br />
+                <input type="radio" id="gender-m" name="gender" value="M" checked="true">
+                <label for="gender-m">Male</label><br>
+                <input type="radio" id="gender-f" name="gender" value="F">
+                <label for="gender-f">Female</label><br>
             </div>
             <div class="form-group">
                 <label asp-for="SelfEmployed" class="control-label"></label>
                 <br />
                 <input type="radio" id="SE-y" name="selfEmployed" value="Y" onclick="show();">
                 <label for="SE-y">Yes</label><br>
-                <input type="radio" id="SE-n" name="selfEmployed" value="N" onclick="hide();">
+                <input type="radio" id="SE-n" name="selfEmployed" value="N" onclick="hide();" checked="true">
                 <label for="SE-n">No</label><br>
             </div>
 
-            <div class="form-group" id="sad"style="display: none">
+            <div class="form-group" id="natureBusiness" style="display: none">
                 <label asp-for="NatureOfBusiness" class="control-label"></label>
-                <input id="test" asp-for="NatureOfBusiness" class="form-control"/>
+                <input id="natureBusinessInput" asp-for="NatureOfBusiness" class="form-control" />
                 <span asp-validation-for="NatureOfBusiness" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -69,13 +90,21 @@
                 <span asp-validation-for="PostalCode" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <span class="control-label">Use Home Address as Mailing Address?</span>
+                <br />
+                <input type="radio" id="ma-y" name="ma" value="Y" onclick="hideMA();">
+                <label for="ma-y">Yes</label><br>
+                <input type="radio" id="ma-n" name="ma" value="N" onclick="showMA();" checked="true">
+                <label for="ma-n">No</label><br>
+            </div>
+            <div class="form-group" id="mailAddr">
                 <label asp-for="MailingAddress" class="control-label"></label>
-                <input asp-for="MailingAddress" class="form-control" />
+                <input id="mailAddrInput" asp-for="MailingAddress" class="form-control" />
                 <span asp-validation-for="MailingAddress" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="mailPostal">
                 <label asp-for="MailingPostalCode" class="control-label"></label>
-                <input asp-for="MailingPostalCode" class="form-control" />
+                <input id="mailPostalInput" asp-for="MailingPostalCode" class="form-control" />
                 <span asp-validation-for="MailingPostalCode" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -95,7 +124,7 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
-                <button type="submit" asp-action="saveme">Submit to another page</button>
+                <button type="submit" asp-action="Saveme">Submit to another page</button>
             </div>
         </form>
     </div>
@@ -107,11 +136,25 @@
 
 <script type="text/javascript" language="javascript">
     function show() {
-        document.getElementById("sad").style.display = "block";
-        document.getElementById("test").required = true;
+        document.getElementById("natureBusiness").style.display = "block";
+        document.getElementById("natureBusinessInput").required = true;
     }
     function hide() {
-        document.getElementById("sad").style.display = "none";
-        document.getElementById("test").required = false;
+        document.getElementById("natureBusiness").style.display = "none";
+        document.getElementById("natureBusinessInput").required = false;
+    }
+
+    function showMA() {
+        document.getElementById("mailAddr").style.display = "block";
+        document.getElementById("mailPostal").style.display = "block";
+        document.getElementById("mailAddrInput").required = true;
+        document.getElementById("mailPostalInput").required = true;
+
+    }
+    function hideMA() {
+        document.getElementById("mailAddr").style.display = "none";
+        document.getElementById("mailPostal").style.display = "none";
+        document.getElementById("mailAddrInput").required = false;
+        document.getElementById("mailPostalInput").required = false;
     }
 </script>

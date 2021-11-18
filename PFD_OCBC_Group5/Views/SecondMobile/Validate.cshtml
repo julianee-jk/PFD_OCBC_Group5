@@ -1,0 +1,28 @@
+﻿@model PFD_OCBC_Group5.Models.SecondMobile
+
+@{
+    ViewData["Title"] = "Validate";
+}
+
+<h4>Personal Information</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Validate">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MobileNo" class="control-label"></label>
+                <input asp-for="MobileNo" class="form-control" type="number" required/>
+                <span asp-validation-for="MobileNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmMobileNo" class="control-label"></label>
+                <input asp-for="ConfirmMobileNo" class="form-control" type="number" required/>
+                <span asp-validation-for="ConfirmMobileNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
