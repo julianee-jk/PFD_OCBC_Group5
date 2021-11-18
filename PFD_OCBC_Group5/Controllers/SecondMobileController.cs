@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace PFD_OCBC_Group5.Controllers
             {
                 if (secondmobile.MobileNo == secondmobile.ConfirmMobileNo)
                 {
+                    HttpContext.Session.SetString("Applicant", "Second");
                     // Send SMS here (TO:DO)
                     //Redirect user to Awaiting/Index page
                     return RedirectToAction("Index", "Awaiting");
