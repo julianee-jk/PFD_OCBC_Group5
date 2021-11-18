@@ -9,6 +9,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\AccountForm\" />
+    <Folder Include="Views\JointAccount\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Views\SecondMobile\Validate.cshtml" />

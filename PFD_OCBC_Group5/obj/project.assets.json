@@ -6491,11 +6491,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\julia\\Source\\Repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj",
+      "projectUniqueName": "C:\\Users\\julia\\source\\repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj",
       "projectName": "PFD_OCBC_Group5",
-      "projectPath": "C:\\Users\\julia\\Source\\Repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj",
+      "projectPath": "C:\\Users\\julia\\source\\repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj",
       "packagesPath": "C:\\Users\\julia\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\julia\\Source\\Repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\obj\\",
+      "outputPath": "C:\\Users\\julia\\source\\repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\julia\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -6554,5 +6554,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\julia\\source\\repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

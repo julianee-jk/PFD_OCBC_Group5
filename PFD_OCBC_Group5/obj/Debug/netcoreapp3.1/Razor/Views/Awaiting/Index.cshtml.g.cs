@@ -66,7 +66,7 @@ using PFD_OCBC_Group5.Models;
 #line hidden
 #nullable disable
             WriteLiteral("\r\n");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "52a9f9d4f41f88fe7cc9398e7b302fada823bb324186", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "52a9f9d4f41f88fe7cc9398e7b302fada823bb324158", async() => {
                 WriteLiteral("\r\n    <script src=\"/js/awaiting.js\"></script>\r\n");
             }
             );
@@ -80,7 +80,7 @@ using PFD_OCBC_Group5.Models;
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n\r\n<div class=\"loader\">\r\n    <img src=\"/images/loader.gif\" />\r\n    <h2>Waiting for Second Applicant to finish</h2>\r\n</div>\r\n\r\n");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "52a9f9d4f41f88fe7cc9398e7b302fada823bb325342", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "52a9f9d4f41f88fe7cc9398e7b302fada823bb325314", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();

@@ -7,6 +7,7 @@ using System.IO;
 using System.Data.SqlClient;
 using PFD_OCBC_Group5.Models;
 using System.Data;
+
 namespace PFD_OCBC_Group5.DAL
 {
     public class AccountDAL
@@ -57,10 +58,6 @@ VALUES(@nric, @name, @nationality, @dob, @occupation, @pr, @gender, @selfEmploye
             cmd.Parameters.AddWithValue("@homeNumber", account.HomeNumber ?? (object)DBNull.Value);
             cmd.Parameters.AddWithValue("@accountCreated", account.AccountCreated);
             
-
-
-           
-
             //A connection to database must be opened before any operations made.
             conn.Open();
             //ExecuteScalar is used to retrieve the auto-generated
@@ -78,12 +75,9 @@ VALUES(@nric, @name, @nationality, @dob, @occupation, @pr, @gender, @selfEmploye
             SqlCommand cmd = conn.CreateCommand();
             //Specify an UPDATE SQL statement
             cmd.CommandText = @"UPDATE AccountHolder SET Name=@name, Nationality=@nationality, DOB=@dob, Occupation=@occupation, PR=@pr, Gender=@gender, SelfEmployed=@selfEmployed, NatureOfBusiness=@natureOfBusiness, HomeAddress=@homeAddress, PostalCode=@postalCode, MailingAddress=@mailingAddress, MailingPostalCode=@mailingPostalCode, Email=@email, HomeNumber=@homeNumber, AccountCreated=@accountCreated WHERE NRIC=@nric";
+            
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
-
-            
-            
-
             cmd.Parameters.AddWithValue("@nric", account.NRIC);
             cmd.Parameters.AddWithValue("@name", account.Name);
             cmd.Parameters.AddWithValue("@nationality", account.Nationality);
@@ -129,8 +123,5 @@ VALUES(@nric, @name, @nationality, @dob, @occupation, @pr, @gender, @selfEmploye
 
             return exists;
         }
-
     }
-
-
 }

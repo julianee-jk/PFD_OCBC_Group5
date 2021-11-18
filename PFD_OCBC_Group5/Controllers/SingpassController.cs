@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace PFD_OCBC_Group5.Controllers
 {
@@ -16,6 +17,7 @@ namespace PFD_OCBC_Group5.Controllers
 
         public ActionResult SingpassLogin()
         {
+            HttpContext.Session.SetString("Type", "Singpass");
             return View();
         }
     }
