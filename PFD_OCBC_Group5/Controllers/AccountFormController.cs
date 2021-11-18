@@ -35,8 +35,15 @@ namespace PFD_OCBC_Group5.Controllers
             if (AccountContext.AccountExists(nric))
             {
                 AccountFormModel account = AccountContext.GetApplicantInfo(nric);
-
-                return View(account);
+                if (account.AccountCreated == "Y")
+                {
+                    return RedirectToAction("SingpassLogin", "Singpass");
+                }
+                else
+                {
+                    return View(account);
+                }
+                
             }
             else
             {
@@ -80,7 +87,6 @@ namespace PFD_OCBC_Group5.Controllers
                 }
                 else
                 {
-                    account.AccountCreated = "N";
                     AccountContext.Add(account);
                 }
 
