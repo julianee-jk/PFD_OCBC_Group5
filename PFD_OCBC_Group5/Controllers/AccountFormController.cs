@@ -16,6 +16,7 @@ namespace PFD_OCBC_Group5.Controllers
     public class AccountFormController : Controller
     {
         private AccountDAL AccountContext = new AccountDAL();
+        private JointAccountDAL JointAccountContext = new JointAccountDAL();
 
         // GET: /<controller>/
         public IActionResult Index()
@@ -80,23 +81,27 @@ namespace PFD_OCBC_Group5.Controllers
 
             if (!flag)
             {
-                if (HttpContext.Session.GetString("Applicant") != "Second")
+                if (AccountContext.AccountExists(account.NRIC))
                 {
-                    HttpContext.Session.SetString("FirstNRIC", account.NRIC);
-                    return RedirectToAction("Validate", "SecondMobile");
+                    AccountContext.Update(account);
                 }
                 else
                 {
-                    HttpContext.Session.SetString("SecondNRIC", account.NRIC);
-                    return RedirectToAction("Index", "JointAccount");
+                    account.AccountCreated = "N";
+                    AccountContext.Add(account);
                 }
+
+
+                    HttpContext.Session.SetString("FirstNRIC", account.NRIC);
+                    return RedirectToAction("Validate", "SecondMobile");
+                
             }
 
             return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
-        public ActionResult Savemesecond(AccountFormModel account, string rs)
+        public ActionResult Savemesecond(AccountFormModel account, string testing)
         {
             bool flag = false;
 
@@ -110,6 +115,7 @@ namespace PFD_OCBC_Group5.Controllers
             temp.Append(account.PostalCode);
             temp.Append(account.Email);
             temp.Append(account.MobileNumber);
+            temp.Append(testing);
 
             foreach (string x in temp)
             {
@@ -122,16 +128,26 @@ namespace PFD_OCBC_Group5.Controllers
 
             if (!flag)
             {
-                if (HttpContext.Session.GetString("Applicant") != "Second")
+                if (AccountContext.AccountExists(account.NRIC))
                 {
-                    HttpContext.Session.SetString("FirstNRIC", account.NRIC);
-                    return RedirectToAction("Validate", "SecondMobile");
+                    AccountContext.Update(account);
                 }
                 else
                 {
-                    HttpContext.Session.SetString("SecondNRIC", account.NRIC);
-                    return RedirectToAction("Index", "JointAccount");
+                    //need to change
+                    account.AccountCreated = "N";
+                    AccountContext.Add(account);    
                 }
+
+                
+
+                JointAccountModel ja = new JointAccountModel();
+                ja.OwnerNRIC = HttpContext.Session.GetString("FirstNRIC");
+                ja.JointNRIC = account.NRIC;
+                ja.RelationshipToOwner = testing;
+                JointAccountContext.Add(ja);
+                return RedirectToAction("Index", "JointAccount");
+
             }
 
             return RedirectToAction("Index", "Home");

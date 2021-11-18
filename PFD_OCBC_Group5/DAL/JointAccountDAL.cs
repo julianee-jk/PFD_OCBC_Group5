@@ -7,6 +7,7 @@ using System.IO;
 using System.Data.SqlClient;
 using PFD_OCBC_Group5.Models;
 using System.Data;
+using System.Diagnostics;
 
 namespace PFD_OCBC_Group5.DAL
 {
@@ -29,28 +30,30 @@ namespace PFD_OCBC_Group5.DAL
             conn = new SqlConnection(strConn);
         }
 
-        public string Add(JointAccountModel jointAcc)
+        public int Add(JointAccountModel jointAcc)
         {
+            Debug.WriteLine(jointAcc.JointNRIC);
+            Debug.WriteLine(jointAcc.RelationshipToOwner);
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
             //return the auto-generated StaffID after insertion
-            cmd.CommandText = @"INSERT INTO JointAccountInfo (OwnerNRIC, JointNRIC, Relationship)
+            cmd.CommandText = @"INSERT INTO JointAccountInfo (OwnerNRIC, JointNRIC, RelationshipToOwner)
                                 OUTPUT INSERTED.AccountNumber
                                 VALUES (@ownerNric, @jointNric, @relationship)";
 
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
             cmd.Parameters.AddWithValue("@ownerNric", jointAcc.OwnerNRIC);
-            cmd.Parameters.AddWithValue("@nric", jointAcc.JointNRIC);
-            cmd.Parameters.AddWithValue("@occupation", jointAcc.RelationshipToOwner);
+            cmd.Parameters.AddWithValue("@jointNric", jointAcc.JointNRIC);
+            cmd.Parameters.AddWithValue("@relationship", jointAcc.RelationshipToOwner);
 
             //A connection to database must be opened before any operations made.
             conn.Open();
 
             //ExecuteScalar is used to retrieve the auto-generated
             //StaffID after executing the INSERT SQL statement
-            jointAcc.AccountNumber = (string)cmd.ExecuteScalar();
+            jointAcc.AccountNumber = (int)cmd.ExecuteScalar();
 
             //A connection should be closed after operations.
             conn.Close();
