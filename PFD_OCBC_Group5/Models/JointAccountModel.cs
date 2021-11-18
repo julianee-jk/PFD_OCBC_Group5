@@ -9,7 +9,7 @@ namespace PFD_OCBC_Group5.Models
     public class JointAccountModel
     {
         [Display(Name = "Account Number")]
-        public string AccountNumber { get; set; }
+        public int AccountNumber { get; set; }
 
         [Display(Name = "Main Account Holder's NRIC")]
         public string OwnerNRIC { get; set; }

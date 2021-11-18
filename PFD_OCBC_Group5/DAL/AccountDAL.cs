@@ -35,9 +35,9 @@ namespace PFD_OCBC_Group5.DAL
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
             //return the auto-generated StaffID after insertion
-            cmd.CommandText = @"INSERT INTO AccountHolder (NRIC, Name, ,Salutation, Nationality, DOB, Occupation, PR, Gender, SelfEmployed, NatureOfBusiness, HomeAddress, PostalCode, MailingAddress, MailingPostalCode, Email, MobileNumber, HomeNumber, AccountCreated)
+            cmd.CommandText = @"INSERT INTO AccountHolder (NRIC, Name, Salutation, Nationality, DOB, Occupation, PR, Gender, SelfEmployed, NatureOfBusiness, HomeAddress, PostalCode, MailingAddress, MailingPostalCode, Email, MobileNumber, HomeNumber, AccountCreated)
 OUTPUT INSERTED.NRIC
-VALUES(@nric, @name, @salutatiion, @nationality, @dob, @occupation, @pr, @gender, @selfEmployed, @natureOfBusiness, @homeAddress, @postalCode, @mailingAddress, @mailingPostalCode, @email, @mobileNumber, @homeNumber, @accountCreated)";
+VALUES(@nric, @name, @salutation, @nationality, @dob, @occupation, @pr, @gender, @selfEmployed, @natureOfBusiness, @homeAddress, @postalCode, @mailingAddress, @mailingPostalCode, @email, @mobileNumber, @homeNumber, @accountCreated)";
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
 
@@ -56,11 +56,28 @@ VALUES(@nric, @name, @salutatiion, @nationality, @dob, @occupation, @pr, @gender
             cmd.Parameters.AddWithValue("@mailingAddress", account.MailingAddress ?? (object)DBNull.Value);
             cmd.Parameters.AddWithValue("@mailingPostalCode", account.MailingPostalCode ?? (object)DBNull.Value);
             cmd.Parameters.AddWithValue("@email", account.Email ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("@mobileNumber", account.MobileNumber);
+            cmd.Parameters.AddWithValue("@mobileNumber", account.MobileNumber ?? (object)DBNull.Value);
             cmd.Parameters.AddWithValue("@homeNumber", account.HomeNumber ?? (object)DBNull.Value);
             cmd.Parameters.AddWithValue("@accountCreated", account.AccountCreated);
 
-
+            Debug.WriteLine(account.NRIC);
+            Debug.WriteLine(account.Name);
+            Debug.WriteLine(account.Salutation);
+            Debug.WriteLine(account.Nationality);
+            Debug.WriteLine(account.DOB);
+            Debug.WriteLine(account.Occupation);
+            Debug.WriteLine(account.PR);
+            Debug.WriteLine(account.Gender);
+            Debug.WriteLine(account.SelfEmployed);
+            Debug.WriteLine(account.NatureOfBusiness);
+            Debug.WriteLine(account.HomeAddress);
+            Debug.WriteLine(account.PostalCode);
+            Debug.WriteLine(account.MailingAddress);
+            Debug.WriteLine(account.MailingPostalCode);
+            Debug.WriteLine(account.Email);
+            Debug.WriteLine(account.MobileNumber);
+            Debug.WriteLine(account.HomeNumber);
+            Debug.WriteLine(account.AccountCreated);
 
 
 

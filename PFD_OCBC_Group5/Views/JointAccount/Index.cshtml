@@ -1,4 +1,4 @@
-﻿@model PFD_OCBC_Group5.Models.JointAccountModel
+﻿@model PFD_OCBC_Group5.Models.JointAccountView
 
 @{
     ViewData["Title"] = "View Joint Account Information";
@@ -15,26 +15,39 @@
 </div>
 
 <div class="jaContainer">
-    <div>
-        <h5>@Html.DisplayNameFor(model => model.AccountNumber)</h5>
-        <p class="accNumber">@Model.AccountNumber</p>
+    <div class="form-group">
+        <label asp-for="ja.AccountNumber" class="control-label"></label>
+        <input asp-for="ja.AccountNumber" class="form-control" readonly />
+        <span asp-validation-for="ja.AccountNumber" class="text-danger"></span>
     </div>
 
     <div class="jaNameRow">
         <div class="jaName">
             <h5>Main Account Holder</h5>
-            <p class="mainHolderName"></p>
+            <div class="form-group">
+                <label asp-for="firstName" class="control-label"></label>
+                <input asp-for="firstName" class="form-control" readonly />
+                <span asp-validation-for="firstName" class="text-danger"></span>
+            </div>
         </div>
 
         <div class="jaName">
             <h5>Joint Account Holder</h5>
-            <p class="jointHolderName"></p>
+            <div class="form-group">
+                <label asp-for="secondName" class="control-label"></label>
+                <input asp-for="secondName" class="form-control" readonly />
+                <span asp-validation-for="secondName" class="text-danger"></span>
+            </div>
         </div>
     </div>
  
     <div>
         <h5>Relationship of Joint Holder to Main Holder</h5>
-        <p class="jointRelationship">@Model.RelationshipToOwner</p>
+        <div class="form-group">
+            <label asp-for="ja.RelationshipToOwner" class="control-label"></label>
+            <input asp-for="ja.RelationshipToOwner" class="form-control" readonly />
+            <span asp-validation-for="ja.RelationshipToOwner" class="text-danger"></span>
+        </div>
     </div>
 </div>
 

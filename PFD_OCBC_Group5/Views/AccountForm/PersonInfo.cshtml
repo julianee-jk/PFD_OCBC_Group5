@@ -232,7 +232,7 @@
                 else
                 {
                     <label class="control-label">Relationship With Owner</label>
-                    <input id="relationshipInput" class="form-control" />
+                    <input type="text" name="testing" id="relationshipInput" class="form-control" />
                     <span class="text-danger"></span>
                 }
             </div>
@@ -270,6 +270,11 @@
                 <span asp-validation-for="HomeNumber" class="text-danger"></span>
             </div>
         </div>
+        <div class="form-group" style="display: none;">
+            <label asp-for="AccountCreated" class="control-label"></label>
+            <input asp-for="AccountCreated" class="form-control" />
+            <span asp-validation-for="AccountCreated" class="text-danger"></span>
+        </div>
         <div class="buttons">
             <input type="submit" value="Save" class="buttonstyle" />
             @if (Context.Session.GetString("Applicant") != "Second")
@@ -278,7 +283,7 @@
             }
             else
             {
-                <button type="submit" class="buttonstyle" asp-action="savemesecond" asp-route-rs=rs>Submit</button>
+                <button type="submit" class="buttonstyle" asp-controller="JointAccount" asp-action="Index">Submit</button>
             }
         </div>
     </form>
