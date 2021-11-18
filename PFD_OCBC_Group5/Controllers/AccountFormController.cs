@@ -27,15 +27,11 @@ namespace PFD_OCBC_Group5.Controllers
         public ActionResult PersonInfo()
         {
             return View();
-
         }
 
         [HttpPost]
         public ActionResult PersonInfo(string nric)
         {
-
-
-
             if (AccountContext.AccountExists(nric))
             {
                 AccountFormModel account = AccountContext.GetApplicantInfo(nric);
@@ -49,10 +45,7 @@ namespace PFD_OCBC_Group5.Controllers
                 account.DOB = DateTime.Now;
                 return View(account);
             }
-
         }
-
-
 
         [HttpPost]
         public ActionResult Saveme(AccountFormModel account)
@@ -161,7 +154,6 @@ namespace PFD_OCBC_Group5.Controllers
         [HttpPost]
         public ActionResult save(AccountFormModel account)
         {
-
             account.AccountCreated = "N";
 
             if (AccountContext.AccountExists(account.NRIC))

@@ -101,10 +101,6 @@ VALUES(@nric, @name, @salutation, @nationality, @dob, @occupation, @pr, @gender,
             //Define the parameters used in SQL statement, value for each parameter
             //is retrieved from respective class's property.
 
-
-            Debug.WriteLine(account.Gender);
-
-
             cmd.Parameters.AddWithValue("@nric", account.NRIC);
             cmd.Parameters.AddWithValue("@name", account.Name);
             cmd.Parameters.AddWithValue("@salutation", account.Salutation);
