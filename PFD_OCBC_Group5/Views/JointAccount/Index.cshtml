@@ -4,40 +4,38 @@
     ViewData["Title"] = "View Joint Account Information";
 }
 
-<h1>New Joint Account Information</h1>
+<head>
+    <script src="~/js/site.js"></script>
+</head>
 
-<hr />
-
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AccountNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AccountNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.OwnerNRIC)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.OwnerNRIC)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.JointNRIC)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.JointNRIC)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RelationshipToOwner)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RelationshipToOwner)
-        </dd>
-    </dl>
+<div class="header">
+    <h2 class="jaTitle">Your application was successful!</h2>
+    <p class="jaSubTitle">Additional information about your newly created joint account will have been sent to your personal emails that were provided during your application process. Thank You!</p>
+    <hr />
 </div>
 
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+<div class="jaContainer">
+    <div>
+        <h5>@Html.DisplayNameFor(model => model.AccountNumber)</h5>
+        <p class="accNumber">@Model.AccountNumber</p>
+    </div>
+
+    <div class="jaNameRow">
+        <div class="jaName">
+            <h5>Main Account Holder</h5>
+            <p class="mainHolderName"></p>
+        </div>
+
+        <div class="jaName">
+            <h5>Joint Account Holder</h5>
+            <p class="jointHolderName"></p>
+        </div>
+    </div>
+ 
+    <div>
+        <h5>Relationship of Joint Holder to Main Holder</h5>
+        <p class="jointRelationship">@Model.RelationshipToOwner</p>
+    </div>
 </div>
+
+<link rel="stylesheet" href="~/css/jointAccount.css" />

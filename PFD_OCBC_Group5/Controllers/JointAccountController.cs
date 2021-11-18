@@ -14,11 +14,6 @@ namespace PFD_OCBC_Group5.Controllers
         // Auto-create account in DAL and retrieve auto-incremented PK as Account Number
         // Retrieve OwnerNRIC, JointNRIC and Relationship through TempData passing
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         public ActionResult Index(JointAccountModel jointAccount)
         {
             return View(jointAccount);

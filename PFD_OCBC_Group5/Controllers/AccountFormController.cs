@@ -48,10 +48,7 @@ namespace PFD_OCBC_Group5.Controllers
                 account.DOB = DateTime.Now;
                 return View(account);
             }
-
         }
-
-
 
         [HttpPost]
         public ActionResult Saveme(AccountFormModel account)
