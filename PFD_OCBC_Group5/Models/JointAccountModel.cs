@@ -17,6 +17,7 @@ namespace PFD_OCBC_Group5.Models
         [Display(Name = "Joint Account Holder's NRIC")]
         public string JointNRIC { get; set; }
 
+        [Required(ErrorMessage = "Please enter your relationship with the main account holder.")]
         public string RelationshipToOwner { get; set; }
     }
 }
