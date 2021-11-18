@@ -26,25 +26,32 @@ namespace PFD_OCBC_Group5.Controllers
         public ActionResult PersonInfo()
         {
             return View();
+
         }
 
         [HttpPost]
-        public ActionResult PersonInfo(AccountFormModel account)
+        public ActionResult PersonInfo(string nric)
         {
-            account.AccountCreated = "N";
 
-            if (AccountContext.AccountExists(account.NRIC))
+
+
+            if (AccountContext.AccountExists(nric))
             {
-                AccountContext.Update(account);
-                return RedirectToAction("Index", "Home");
+                AccountFormModel account = AccountContext.GetApplicantInfo(nric);
+
+                return View(account);
             }
             else
             {
-                AccountContext.Add(account);
-                return RedirectToAction("Home/Index");
+                AccountFormModel account = new AccountFormModel();
+                account.NRIC = nric;
+                account.DOB = DateTime.Now;
+                return View(account);
             }
-                
+
         }
+
+
 
         [HttpPost]
         public ActionResult Saveme(AccountFormModel account)
@@ -62,22 +69,48 @@ namespace PFD_OCBC_Group5.Controllers
             temp.Append(account.Email);
             temp.Append(account.MobileNumber);
 
-            foreach(string x in temp)
+            foreach (string x in temp)
             {
-                if(x == null)
+                if (x == null)
                 {
                     flag = true;
                     break;
                 }
             }
 
-            if(!flag)
+            if (!flag)
             {
                 return RedirectToAction("Validate", "SecondMobile");
             }
 
             return RedirectToAction("Index", "Home");
-           
+
+
+
+        }
+
+
+        public ActionResult save(string nric)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult save(AccountFormModel account)
+        {
+
+            account.AccountCreated = "N";
+
+            if (AccountContext.AccountExists(account.NRIC))
+            {
+                AccountContext.Update(account);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                AccountContext.Add(account);
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

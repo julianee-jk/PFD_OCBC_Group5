@@ -6,7 +6,7 @@
 
 <hr />
 <div class="row">
-    <form asp-action="PersonInfo" id="account">
+    <form asp-action="save" id="account">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="segmented-row">
             <div class="form-group">
@@ -23,16 +23,72 @@
         <div class="form-group test">
             <label asp-for="Salutation" class="control-label">Salutation: </label>
             <br />
-            <input type="radio" class="radiobtn" id="s-dr" name="salutation" value="Dr" checked="true">
-            <label for="s-dr">Dr</label><br>
-            <input type="radio" class="radiobtn" id="s-mr" name="salutation" value="Mr">
-            <label for="s-mr">Mr</label><br>
-            <input type="radio" class="radiobtn" id="s-mrs" name="salutation" value="Mrs">
-            <label for="s-mrs">Mrs</label><br>
-            <input type="radio" class="radiobtn" id="s-miss" name="salutation" value="Miss">
-            <label for="s-miss">Miss</label><br>
-            <input type="radio" class="radiobtn" id="s-mdm" name="salutation" value="Mdm">
-            <label for="s-mdm">Mdm</label><br>
+
+            @if (Model.Salutation == "Dr")
+            {
+                <input type="radio" class="radiobtn" id="s-dr" name="salutation" value="Dr" checked="true">
+                <label for="s-dr">Dr</label><br>
+                <input type="radio" class="radiobtn" id="s-mr" name="salutation" value="Mr">
+                <label for="s-mr">Mr</label><br>
+                <input type="radio" class="radiobtn" id="s-mrs" name="salutation" value="Mrs">
+                <label for="s-mrs">Mrs</label><br>
+                <input type="radio" class="radiobtn" id="s-miss" name="salutation" value="Miss">
+                <label for="s-miss">Miss</label><br>
+                <input type="radio" class="radiobtn" id="s-mdm" name="salutation" value="Mdm">
+                <label for="s-mdm">Mdm</label><br>
+            }
+            else if (Model.Salutation == "Mr")
+            {
+                <input type="radio" class="radiobtn" id="s-dr" name="salutation" value="Dr">
+                <label for="s-dr">Dr</label><br>
+                <input type="radio" class="radiobtn" id="s-mr" name="salutation" value="Mr" checked="true">
+                <label for="s-mr">Mr</label><br>
+                <input type="radio" class="radiobtn" id="s-mrs" name="salutation" value="Mrs">
+                <label for="s-mrs">Mrs</label><br>
+                <input type="radio" class="radiobtn" id="s-miss" name="salutation" value="Miss">
+                <label for="s-miss">Miss</label><br>
+                <input type="radio" class="radiobtn" id="s-mdm" name="salutation" value="Mdm">
+                <label for="s-mdm">Mdm</label><br>
+            }
+            else if (Model.Salutation == "Mrs")
+            {
+                <input type="radio" class="radiobtn" id="s-dr" name="salutation" value="Dr">
+                <label for="s-dr">Dr</label><br>
+                <input type="radio" class="radiobtn" id="s-mr" name="salutation" value="Mr">
+                <label for="s-mr">Mr</label><br>
+                <input type="radio" class="radiobtn" id="s-mrs" name="salutation" value="Mrs" checked="true">
+                <label for="s-mrs">Mrs</label><br>
+                <input type="radio" class="radiobtn" id="s-miss" name="salutation" value="Miss">
+                <label for="s-miss">Miss</label><br>
+                <input type="radio" class="radiobtn" id="s-mdm" name="salutation" value="Mdm">
+                <label for="s-mdm">Mdm</label><br>
+            }
+            else if (Model.Salutation == "Miss")
+            {
+                <input type="radio" class="radiobtn" id="s-dr" name="salutation" value="Dr">
+                <label for="s-dr">Dr</label><br>
+                <input type="radio" class="radiobtn" id="s-mr" name="salutation" value="Mr">
+                <label for="s-mr">Mr</label><br>
+                <input type="radio" class="radiobtn" id="s-mrs" name="salutation" value="Mrs">
+                <label for="s-mrs">Mrs</label><br>
+                <input type="radio" class="radiobtn" id="s-miss" name="salutation" value="Miss" checked="true">
+                <label for="s-miss">Miss</label><br>
+                <input type="radio" class="radiobtn" id="s-mdm" name="salutation" value="Mdm">
+                <label for="s-mdm">Mdm</label><br>
+            }
+            else
+            {
+                <input type="radio" class="radiobtn" id="s-dr" name="salutation" value="Dr">
+                <label for="s-dr">Dr</label><br>
+                <input type="radio" class="radiobtn" id="s-mr" name="salutation" value="Mr">
+                <label for="s-mr">Mr</label><br>
+                <input type="radio" class="radiobtn" id="s-mrs" name="salutation" value="Mrs">
+                <label for="s-mrs">Mrs</label><br>
+                <input type="radio" class="radiobtn" id="s-miss" name="salutation" value="Miss">
+                <label for="s-miss">Miss</label><br>
+                <input type="radio" class="radiobtn" id="s-mdm" name="salutation" value="Mdm" checked="true">
+                <label for="s-mdm">Mdm</label><br>
+            }
         </div>
         <div class="segmented-row">
             <div class="form-group">
@@ -56,10 +112,21 @@
                 <label asp-for="PR" class="control-label"></label>
                 <br />
                 <div class="shortradiobtn">
-                    <input type="radio" class="radiobtn" id="pr-y" name="pr" value="Y" checked="true">
-                    <label for="pr-y">Yes</label><br>
-                    <input type="radio" class="radiobtn" id="pr-n" name="pr" value="N">
-                    <label for="pr-n">No</label><br>
+
+                    @if (Model.PR == "Y")
+                    {
+                        <input type="radio" class="radiobtn" id="pr-y" name="pr" value="Y" checked="true">
+                        <label for="pr-y">Yes</label><br>
+                        <input type="radio" class="radiobtn" id="pr-n" name="pr" value="N">
+                        <label for="pr-n">No</label><br>
+                    }
+                    else
+                    {
+                        <input type="radio" class="radiobtn" id="pr-y" name="pr" value="Y">
+                        <label for="pr-y">Yes</label><br>
+                        <input type="radio" class="radiobtn" id="pr-n" name="pr" value="N" checked="true">
+                        <label for="pr-n">No</label><br>
+                    }
                 </div>
             </div>
         </div>
@@ -68,20 +135,42 @@
                 <label asp-for="Gender" class="control-label"></label>
                 <br />
                 <div class="shortradiobtn">
-                    <input type="radio" class="radiobtn" id="gender-m" name="gender" value="M" checked="true">
-                    <label for="gender-m">Male</label><br>
-                    <input type="radio" class="radiobtn" id="gender-f" name="gender" value="F">
-                    <label for="gender-f">Female</label><br>
+
+                    @if (Model.Gender == "M")
+                    {
+                        <input type="radio" class="radiobtn" id="gender-m" name="gender" value="M" checked="true">
+                        <label for="gender-m">Male</label><br>
+                        <input type="radio" class="radiobtn" id="gender-f" name="gender" value="F">
+                        <label for="gender-f">Female</label><br>
+                    }
+                    else
+                    {
+                        <input type="radio" class="radiobtn" id="gender-m" name="gender" value="M">
+                        <label for="gender-m">Male</label><br>
+                        <input type="radio" class="radiobtn" id="gender-f" name="gender" value="F" checked="true">
+                        <label for="gender-f">Female</label><br>
+                    }
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="SelfEmployed" class="control-label"></label>
                 <br />
                 <div class="shortradiobtn">
-                    <input type="radio" class="radiobtn" id="SE-y" name="selfEmployed" value="Y" onclick="show();">
-                    <label for="SE-y">Yes</label><br>
-                    <input type="radio" class="radiobtn" id="SE-n" name="selfEmployed" value="N" onclick="hide();" checked="true">
-                    <label for="SE-n">No</label><br>
+
+                    @if (Model.SelfEmployed == "Y")
+                    {
+                        <input type="radio" class="radiobtn" id="SE-y" name="selfEmployed" value="Y" onclick="show();">
+                        <label for="SE-y">Yes</label><br>
+                        <input type="radio" class="radiobtn" id="SE-n" name="selfEmployed" value="N" onclick="hide();" checked="true">
+                        <label for="SE-n">No</label><br>
+                    }
+                    else
+                    {
+                        <input type="radio" class="radiobtn" id="SE-y" name="selfEmployed" value="Y" onclick="show();" checked="true">
+                        <label for="SE-y">Yes</label><br>
+                        <input type="radio" class="radiobtn" id="SE-n" name="selfEmployed" value="N" onclick="hide();">
+                        <label for="SE-n">No</label><br>
+                    }
                 </div>
             </div>
         </div>
@@ -114,10 +203,21 @@
                 <span class="control-label">Use Home Address as Mailing Address?</span>
                 <br />
                 <div class="shortradiobtn">
-                    <input type="radio" class="radiobtn" id="ma-y" name="ma" value="Y" onclick="hideMA();">
-                    <label for="ma-y">Yes</label><br>
-                    <input type="radio" class="radiobtn" id="ma-n" name="ma" value="N" onclick="showMA();" checked="true">
-                    <label for="ma-n">No</label><br>
+
+                    @if (Model.MailingAddress == null)
+                    {
+                        <input type="radio" class="radiobtn" id="ma-y" name="ma" value="Y" onclick="hideMA();" checked="true">
+                        <label for="ma-y">Yes</label><br>
+                        <input type="radio" class="radiobtn" id="ma-n" name="ma" value="N" onclick="showMA();">
+                        <label for="ma-n">No</label><br>
+                    }
+                    else
+                    {
+                        <input type="radio" class="radiobtn" id="ma-y" name="ma" value="Y" onclick="hideMA();">
+                        <label for="ma-y">Yes</label><br>
+                        <input type="radio" class="radiobtn" id="ma-n" name="ma" value="N" onclick="showMA();" checked="true">
+                        <label for="ma-n">No</label><br>
+                    }
                 </div>
             </div>
         </div>

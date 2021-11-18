@@ -1,10 +1,22 @@
-﻿@{
+﻿@model PFD_OCBC_Group5.Models.AccountFormModel
+@{
     ViewData["Title"] = "Singpass";
     Layout = null;
 }
 
-<a asp-controller="AccountForm" asp-action="PersonInfo">
     <img src="/images/Singpass.png" />
-</a> 
+<form asp-controller="AccountForm" asp-action="PersonInfo">
+    <div class="form-group">
+        <label asp-for="NRIC" class="control-label"></label>
+        <input asp-for="NRIC" id="test" class="form-control" />
+
+        <span asp-validation-for="NRIC" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+
+
 
 <link href="/css/singpass.css" rel="stylesheet">
