@@ -1,0 +1,43 @@
+﻿@model PFD_OCBC_Group5.Models.JointAccountModel
+
+@{
+    ViewData["Title"] = "View Joint Account Information";
+}
+
+<h1>New Joint Account Information</h1>
+
+<hr />
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AccountNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AccountNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OwnerNRIC)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OwnerNRIC)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.JointNRIC)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.JointNRIC)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RelationshipToOwner)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RelationshipToOwner)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
