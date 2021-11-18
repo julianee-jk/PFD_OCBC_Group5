@@ -181,6 +181,31 @@ VALUES(@nric, @name, @salutation, @nationality, @dob, @occupation, @pr, @gender,
 
             return applicant;
         }
+        public string GetNRIC(string phone)
+        {
+            string nric = null;
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an UPDATE SQL statement
+            cmd.CommandText = @"SELECT * FROM AccountHolder
+                                WHERE MobileNumber = @mobileNumber";
+
+            cmd.Parameters.AddWithValue("@mobileNumber", phone);
+
+            conn.Open();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    nric = reader.GetString(0);
+                }
+            }
+            reader.Close();
+            conn.Close();
+            return nric;
+        }
 
     }
 

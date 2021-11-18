@@ -83,6 +83,9 @@ namespace PFD_OCBC_Group5.Controllers
                 jaView.firstName = AccountContext.GetApplicantInfo(ja.OwnerNRIC).Name;
                 jaView.secondName = AccountContext.GetApplicantInfo(ja.JointNRIC).Name;
 
+                JointAccountContext.UpdateCreateAccount(ja.OwnerNRIC);
+                JointAccountContext.UpdateCreateAccount(ja.JointNRIC);
+
                 jaView.ja = ja;
 
                 HttpContext.Session.SetString("SecondNRIC", account.NRIC);

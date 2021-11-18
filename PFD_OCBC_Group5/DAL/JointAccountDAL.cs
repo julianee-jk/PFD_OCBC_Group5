@@ -61,5 +61,27 @@ namespace PFD_OCBC_Group5.DAL
             //Return id when no error occurs.
             return jointAcc.AccountNumber;
         }
+
+        public int UpdateCreateAccount(string nric)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an UPDATE SQL statement
+            cmd.CommandText = @"UPDATE AccountHolder SET AccountCreated=@accountCreated WHERE NRIC=@nric";
+            //Define the parameters used in SQL statement, value for each parameter
+            //is retrieved from respective class's property.
+
+            cmd.Parameters.AddWithValue("@nric", nric);
+            cmd.Parameters.AddWithValue("@accountCreated", "Y");
+
+
+            //Open a database connection
+            conn.Open();
+            //ExecuteNonQuery is used for UPDATE and DELETE
+            int count = cmd.ExecuteNonQuery();
+            //Close the database connection
+            conn.Close();
+            return count;
+        }
     }
 }

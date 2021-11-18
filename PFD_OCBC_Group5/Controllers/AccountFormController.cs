@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using PFD_OCBC_Group5.Models;
 using PFD_OCBC_Group5.DAL;
+using System.Diagnostics;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -34,7 +35,20 @@ namespace PFD_OCBC_Group5.Controllers
         [HttpPost]
         public ActionResult PersonInfo(string nric)
         {
-            if (AccountContext.AccountExists(nric))
+
+            if(HttpContext.Session.GetString("Status") == "Continue")
+            {
+                string temp;
+                temp = AccountContext.GetNRIC(nric);
+               
+                if(temp != null)
+                {
+                    AccountFormModel account = AccountContext.GetApplicantInfo(temp);
+                    Debug.WriteLine(account.NRIC);
+                    return View(account);
+                }
+            }
+            else if (AccountContext.AccountExists(nric))
             {
                 AccountFormModel account = AccountContext.GetApplicantInfo(nric);
                 if (account.AccountCreated == "Y")
@@ -54,6 +68,8 @@ namespace PFD_OCBC_Group5.Controllers
                 account.DOB = DateTime.Now;
                 return View(account);
             }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
