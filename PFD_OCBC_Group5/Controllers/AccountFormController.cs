@@ -80,15 +80,62 @@ namespace PFD_OCBC_Group5.Controllers
 
             if (!flag)
             {
-                return RedirectToAction("Validate", "SecondMobile");
+                if (HttpContext.Session.GetString("Applicant") != "Second")
+                {
+                    HttpContext.Session.SetString("FirstNRIC", account.NRIC);
+                    return RedirectToAction("Validate", "SecondMobile");
+                }
+                else
+                {
+                    HttpContext.Session.SetString("SecondNRIC", account.NRIC);
+                    return RedirectToAction("Index", "JointAccount");
+                }
             }
 
             return RedirectToAction("Index", "Home");
-
-
-
         }
 
+        [HttpPost]
+        public ActionResult Savemesecond(AccountFormModel account, string rs)
+        {
+            bool flag = false;
+
+            string[] temp = new string[] { };
+
+            temp.Append(account.Occupation);
+            temp.Append(account.PR);
+            temp.Append(account.Gender);
+            temp.Append(account.SelfEmployed);
+            temp.Append(account.HomeAddress);
+            temp.Append(account.PostalCode);
+            temp.Append(account.Email);
+            temp.Append(account.MobileNumber);
+
+            foreach (string x in temp)
+            {
+                if (x == null)
+                {
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (!flag)
+            {
+                if (HttpContext.Session.GetString("Applicant") != "Second")
+                {
+                    HttpContext.Session.SetString("FirstNRIC", account.NRIC);
+                    return RedirectToAction("Validate", "SecondMobile");
+                }
+                else
+                {
+                    HttpContext.Session.SetString("SecondNRIC", account.NRIC);
+                    return RedirectToAction("Index", "JointAccount");
+                }
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
 
         public ActionResult save(string nric)
         {
