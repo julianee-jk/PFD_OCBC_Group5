@@ -15,9 +15,7 @@ namespace PFD_OCBC_Group5.Controllers
 {
     public class AccountFormController : Controller
     {
-
         private AccountDAL AccountContext = new AccountDAL();
-
 
         // GET: /<controller>/
         public IActionResult Index()
@@ -33,14 +31,11 @@ namespace PFD_OCBC_Group5.Controllers
         [HttpPost]
         public ActionResult PersonInfo(AccountFormModel account)
         {
-
             account.AccountCreated = "N";
 
             if (AccountContext.AccountExists(account.NRIC))
             {
-
                 return RedirectToAction("Index", "Home");
-
             }
             else
             {
@@ -51,10 +46,8 @@ namespace PFD_OCBC_Group5.Controllers
         }
 
         [HttpPost]
-        public ActionResult saveme(AccountFormModel account)
+        public ActionResult Saveme(AccountFormModel account)
         {
-
-
             bool flag = false;
 
             string[] temp = new string[] { };
@@ -82,14 +75,8 @@ namespace PFD_OCBC_Group5.Controllers
 
             }
 
-
-
-
-
             return RedirectToAction("Index");
            
-
         }
-
     }
 }

@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/Users/jae/Desktop/PFD Hackathon/PFD MVC/PFD_OCBC_Group5/PFD_OCBC_Group5.csproj": {}
+    "C:\\Users\\yanji\\Desktop\\PFD Prototype\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj": {}
   },
   "projects": {
-    "/Users/jae/Desktop/PFD Hackathon/PFD MVC/PFD_OCBC_Group5/PFD_OCBC_Group5.csproj": {
+    "C:\\Users\\yanji\\Desktop\\PFD Prototype\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jae/Desktop/PFD Hackathon/PFD MVC/PFD_OCBC_Group5/PFD_OCBC_Group5.csproj",
+        "projectUniqueName": "C:\\Users\\yanji\\Desktop\\PFD Prototype\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj",
         "projectName": "PFD_OCBC_Group5",
-        "projectPath": "/Users/jae/Desktop/PFD Hackathon/PFD MVC/PFD_OCBC_Group5/PFD_OCBC_Group5.csproj",
-        "packagesPath": "/Users/jae/.nuget/packages/",
-        "outputPath": "/Users/jae/Desktop/PFD Hackathon/PFD MVC/PFD_OCBC_Group5/obj/",
+        "projectPath": "C:\\Users\\yanji\\Desktop\\PFD Prototype\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj",
+        "packagesPath": "C:\\Users\\yanji\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\yanji\\Desktop\\PFD Prototype\\PFD_OCBC_Group5\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/jae/.config/NuGet/NuGet.Config"
+          "C:\\Users\\yanji\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -37,6 +39,16 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.1.5, )"
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -55,7 +67,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.402/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

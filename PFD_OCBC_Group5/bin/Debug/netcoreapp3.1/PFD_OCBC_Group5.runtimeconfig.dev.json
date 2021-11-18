@@ -1,8 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "/Users/jae/.dotnet/store/|arch|/|tfm|",
-      "/Users/jae/.nuget/packages"
+      "C:\\Users\\yanji\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\yanji\\.nuget\\packages"
     ]
   }
 }
