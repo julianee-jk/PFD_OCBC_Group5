@@ -123,8 +123,5 @@ VALUES(@nric, @name, @nationality, @dob, @occupation, @pr, @gender, @selfEmploye
 
             return exists;
         }
-
     }
-
-
 }

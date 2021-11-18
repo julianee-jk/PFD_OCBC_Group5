@@ -50,7 +50,7 @@ namespace PFD_OCBC_Group5.Models
         public string MailingAddress { get; set; }
 
         [StringLength(6)]
-        [Display(Name = "MailingPostalCode")]
+        [Display(Name = "Mailing Postal Code")]
         public string MailingPostalCode { get; set; }
 
         [DataType(DataType.EmailAddress)]
