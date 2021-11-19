@@ -25,7 +25,6 @@
         <div class="jaName">
             <h5>Main Account Holder</h5>
             <div class="form-group">
-                <label asp-for="firstName" class="control-label"></label>
                 <input asp-for="firstName" class="form-control" readonly />
                 <span asp-validation-for="firstName" class="text-danger"></span>
             </div>
@@ -34,7 +33,6 @@
         <div class="jaName">
             <h5>Joint Account Holder</h5>
             <div class="form-group">
-                <label asp-for="secondName" class="control-label"></label>
                 <input asp-for="secondName" class="form-control" readonly />
                 <span asp-validation-for="secondName" class="text-danger"></span>
             </div>
@@ -44,7 +42,6 @@
     <div>
         <h5>Relationship of Joint Holder to Main Holder</h5>
         <div class="form-group">
-            <label asp-for="ja.RelationshipToOwner" class="control-label"></label>
             <input asp-for="ja.RelationshipToOwner" class="form-control" readonly />
             <span asp-validation-for="ja.RelationshipToOwner" class="text-danger"></span>
         </div>
