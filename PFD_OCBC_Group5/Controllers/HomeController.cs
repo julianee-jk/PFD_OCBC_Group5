@@ -22,6 +22,7 @@ namespace PFD_OCBC_Group5.Controllers
         public IActionResult Index()
         {
             HttpContext.Session.SetString("Status", "New");
+            HttpContext.Session.SetString("Applicant", "First");
             return View();
         }
 
