@@ -4,8 +4,18 @@
     ViewData["Title"] = "Validate";
 }
 
-<h3 style="margin-top: 3em">Enter second applicant's mobile number</h3>
-<p style="color: grey; font-size: 10px">We will send a link via SMS to the second applicant to input their information.</p>
+
+@if (Context.Session.GetString("Status") == "Continue")
+{
+    <h3 style="margin-top: 3em">Enter your mobile number</h3>
+    <p style="color: grey; font-size: 10px">If you have saved your information</p>
+}
+else
+{
+    <h3 style="margin-top: 3em">Enter second applicant's mobile number</h3>
+    <p style="color: grey; font-size: 10px">We will send a link via SMS to the second applicant to input their information.</p>
+}
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -13,18 +23,18 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="MobileNo" class="control-label"></label>
-                <input name="nric" asp-for="MobileNo" class="form-control" type="number" required/>
+                <input name="MobileNo" asp-for="MobileNo" class="form-control" type="number" required />
                 <span asp-validation-for="MobileNo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label"></label>
-                <input class="form-control" type="number" onpaste="return false;" ondrop="return false;" required/>
-                <span class="text-danger">@ViewBag.MismatchNum</span>
+                <label asp-for="ConfirmMobileNo" class="control-label"></label>
+                <input asp-for="ConfirmMobileNo" class="form-control" type="number" onpaste="return false;" ondrop="return false;" required />
+                <span asp-validation-for="ConfirmMobileNo" class="text-danger">@ViewBag.MismatchNum</span>
             </div>
             <div class="form-group">
-                @if(Context.Session.GetString("Status") != "Continue")
-            {
-                <input type="submit" value="Send" class="btn btn-primary" />
+                @if (Context.Session.GetString("Status") != "Continue")
+                {
+                    <input type="submit" value="Send" class="btn btn-primary" />
                 }
                 else
                 {
@@ -42,5 +52,4 @@
         -webkit-appearance: none;
         margin: 0;
     }
-
 </style>
