@@ -33,13 +33,13 @@ namespace PFD_OCBC_Group5.Controllers
         }
 
         [HttpPost]
-        public ActionResult PersonInfo(string nric)
+        public ActionResult PersonInfo(string nric,string MobileNo)
         {
 
             if(HttpContext.Session.GetString("Status") == "Continue")
             {
                 string temp;
-                temp = AccountContext.GetNRIC(nric);
+                temp = AccountContext.GetNRIC(MobileNo);
                
                 if(temp != null)
                 {
@@ -157,6 +157,7 @@ namespace PFD_OCBC_Group5.Controllers
             {
                 if (AccountContext.AccountExists(account.NRIC))
                 {
+                    account.AccountCreated = "N";
                     AccountContext.Update(account);
                 }
                 else

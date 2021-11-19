@@ -64,6 +64,7 @@ namespace PFD_OCBC_Group5.Controllers
             {
                 if (AccountContext.AccountExists(account.NRIC))
                 {
+                    account.AccountCreated = "N";
                     AccountContext.Update(account);
                 }
                 else

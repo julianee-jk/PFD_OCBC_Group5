@@ -55,8 +55,8 @@ namespace PFD_OCBC_Group5.Controllers
 
             verification.NRIC = HttpContext.Session.GetString("FirstNRIC");
             verification.VerificationDate = DateTime.Now;
-            
 
+            HttpContext.Session.SetString("Status", "New");
             
 
             if (photo != null &&
