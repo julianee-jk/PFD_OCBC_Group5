@@ -113,7 +113,7 @@ namespace PFD_OCBC_Group5.Controllers
                 if (HttpContext.Session.GetString("Type") == "Singpass")
                 {
                     HttpContext.Session.SetString("FirstNRIC", account.NRIC);
-                    return RedirectToAction("Validate", "SecondMobile");
+                    return RedirectToAction("Validate", "SecondEmail");
                 }
                 else
                 {

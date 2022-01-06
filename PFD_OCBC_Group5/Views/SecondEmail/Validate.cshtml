@@ -1,4 +1,4 @@
-﻿@model PFD_OCBC_Group5.Models.SecondMobile
+﻿@model PFD_OCBC_Group5.Models.SecondEmail
 
 @{
     ViewData["Title"] = "Validate";
@@ -7,13 +7,13 @@
 
 @if (Context.Session.GetString("Status") == "Continue")
 {
-    <h3 style="margin-top: 3em">Enter your mobile number</h3>
+    <h3 style="margin-top: 3em">Enter your email address</h3>
     <p style="color: grey; font-size: 10px">If you have saved your information</p>
 }
 else
 {
-    <h3 style="margin-top: 3em">Enter second applicant's mobile number</h3>
-    <p style="color: grey; font-size: 10px">We will send a link via SMS to the second applicant to input their information.</p>
+    <h3 style="margin-top: 3em">Enter the second applicant's email address</h3>
+    <p style="color: grey; font-size: 10px">We will send a link via email to the second applicant to input their information.</p>
 }
 
 <hr />
@@ -22,14 +22,14 @@ else
         <form asp-action="Validate">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="MobileNo" class="control-label"></label>
-                <input name="MobileNo" asp-for="MobileNo" class="form-control" type="number" required />
-                <span asp-validation-for="MobileNo" class="text-danger"></span>
+                <label asp-for="EmailAddr" class="control-label"></label>
+                <input name="EmailAddr" asp-for="EmailAddr" class="form-control"/>
+                <span asp-validation-for="EmailAddr" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ConfirmMobileNo" class="control-label"></label>
-                <input asp-for="ConfirmMobileNo" class="form-control" type="number" onpaste="return false;" ondrop="return false;" required />
-                <span asp-validation-for="ConfirmMobileNo" class="text-danger">@ViewBag.MismatchNum</span>
+                <label asp-for="ConfirmEmailAddr" class="control-label"></label>
+                <input asp-for="ConfirmEmailAddr" class="form-control" onpaste="return false;" ondrop="return false;"/>
+                <span asp-validation-for="ConfirmEmailAddr" class="text-danger">@ViewBag.MismatchNum</span>
             </div>
             <div class="form-group">
                 @if (Context.Session.GetString("Status") != "Continue")
@@ -40,7 +40,6 @@ else
                 {
                     <button type="submit" class="buttonstyle" asp-controller="AccountForm" asp-action="PersonInfo">Submit</button>
                 }
-
             </div>
         </form>
     </div>
