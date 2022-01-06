@@ -5,9 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PFD_OCBC_Group5.Models;
-using MailKit.Net.Smtp;
-using MailKit;
-using MimeKit;
+using System.Net.Mail;
 
 namespace PFD_OCBC_Group5.Controllers
 {
@@ -29,44 +27,23 @@ namespace PFD_OCBC_Group5.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Confirm email
                 if (secondEmail.EmailAddr == secondEmail.ConfirmEmailAddr)
                 {
                     HttpContext.Session.SetString("Applicant", "Second");
 
-                    // Send Email here (TO:DO)
-                    //var mailMsg = new MimeMessage();
+                    // Link to send to second person via Email - TO:DO
+                    string secondPersonLink = "https://localhost:44382/AccountForm/PersonInfo?userId=" + ;
 
-                    //// Send from sending party
-                    //mailMsg.From.Add(new MailboxAddress("OCBC", "pfdgrp5testacc@gmail.com"));
+                    // Email body text
+                    string messageBody = @"Dear user," + "\n" +
+                                              "You have been invited to an OCBC Joint-Account as the second applicant." + "\n"
+                                            + "Please click on the link below to continue the process." + "\n\n"
+                                            + "OCBC Joint-Account Application Link: " + secondPersonLink;
 
-                    //// Send to receiving party
-                    //mailMsg.To.Add(new MailboxAddress("TestName", "pfdgrp5testacc@gmail.com"));
-                    //mailMsg.Subject = "Application for Joint Account";
-                    //mailMsg.Body = new TextPart("html")
-                    //{
-                    //    Text = "<a>www.youtube.com</a>"
-                    //};
+                    // Send Email here
+                    SendEmail("OCBC Joint-Account Creation - 2nd Applicant", messageBody, secondEmail.ConfirmEmailAddr);
 
-                    //SmtpClient smtpClient = new SmtpClient();
-                    //try
-                    //{
-                    //    // Connect to the gmail smtp server using port 465
-                    //    smtpClient.Connect("smtp.gmail.com", 465, true);
-
-                    //    // Email Address and Password authentication required for gmail smtp server connection
-                    //    smtpClient.Authenticate("email", "password");
-                    //    smtpClient.Send(mailMsg);
-                    //} 
-                    //catch (Exception ex)
-                    //{
-                    //    // If an error pops up, display msg
-                    //    Console.WriteLine(ex.Message);
-
-                    //    // Disconnect the smtp connection
-                    //    smtpClient.Disconnect(true);
-                    //    // and dispose of the object created for the client
-                    //    smtpClient.Dispose();
-                    //}
 
                     if (HttpContext.Session.GetString("Type") == "Singpass")
                     {
@@ -75,7 +52,7 @@ namespace PFD_OCBC_Group5.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Awaiting"); // TO:DO
+                        return RedirectToAction("Index", "Home"); // TO:DO
                     }
                 }
                 else
@@ -90,6 +67,28 @@ namespace PFD_OCBC_Group5.Controllers
                 //Input validation fails, return to the Create view
                 //to display error message
                 return View(secondEmail);
+            }
+        }
+
+        public static void SendEmail(string messageBody, string messageContent, string email)
+        {
+            MailAddress from = new MailAddress("ocbcpfdgroup5noreply@gmail.com");
+            MailAddress to = new MailAddress(email);
+            MailMessage message = new MailMessage(from, to);
+            message.Subject = messageBody;
+            message.Body = messageContent;
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+            client.Credentials = new System.Net.NetworkCredential("ocbcpfdgroup5noreply@gmail.com", "pfdgrp5123.");
+            client.EnableSsl = true;
+
+            try
+            {
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception caught in sending email(): {0}",
+                    ex.ToString());
             }
         }
     }
