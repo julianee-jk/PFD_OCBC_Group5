@@ -1,22 +1,32 @@
-﻿@model PFD_OCBC_Group5.Models.AccountFormModel
+﻿@model PFD_OCBC_Group5.Models.SingpassModel
+
 @{
-    ViewData["Title"] = "Singpass";
-    Layout = null;
+    ViewData["Title"] = "SingpassLogin";
 }
 
-    <img src="/images/Singpass.png" />
-<form asp-controller="AccountForm" asp-action="PersonInfo">
-    <div class="form-group">
-        <label asp-for="NRIC" class="control-label"></label>
-        <input asp-for="NRIC" id="test" class="form-control" required />
+<h1>Singpass Login</h1>
 
-        <span asp-validation-for="NRIC" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Login" class="btn btn-primary" />
-    </div>
-</form>
+<div>
+    <hr />
+    <form asp-controller="Singpass" asp-action="SingpassLogin">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+        <div class="segmented-row">
+            <div class="form-group">
+                <label asp-for="NRIC" class="control-label"></label>
+                <input asp-for="NRIC" class="form-control" required />
+                <span asp-validation-for="NRIC" class="text-danger"></span>
+            </div>
 
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" required />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
 
-<link href="/css/singpass.css" rel="stylesheet">
+        <div class="buttons">
+            <button type="submit" class="buttonstyle" asp-action="SingpassLogin">Login</button>
+        </div>
+    </form>
+</div>

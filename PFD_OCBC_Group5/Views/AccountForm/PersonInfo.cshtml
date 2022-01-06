@@ -1,6 +1,5 @@
 ﻿@model PFD_OCBC_Group5.Models.AccountFormModel
 
-
 @{
     ViewData["Title"] = "PersonInfo";
 }
@@ -136,7 +135,6 @@
                 <label asp-for="Gender" class="control-label"></label>
                 <br />
                 <div class="shortradiobtn">
-
                     @if (Model.Gender == "M")
                     {
                         <input type="radio" class="radiobtn" id="gender-m" name="gender" value="M" checked="true">
@@ -252,8 +250,6 @@
                 </div>
             }
         </div>
-
-
 
         <div class="segmented-row">
             <div class="form-group">

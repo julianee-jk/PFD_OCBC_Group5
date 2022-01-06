@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Routing;
 using PFD_OCBC_Group5.Models;
 using PFD_OCBC_Group5.DAL;
 using System.Diagnostics;
+using PFD_OCBC_Group5.Extensions;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -25,9 +26,9 @@ namespace PFD_OCBC_Group5.Controllers
             return View();
         }
 
-        public ActionResult PersonInfo()
+        public ActionResult PersonInfo(string nric)
         {
-            AccountFormModel account = new AccountFormModel();
+            AccountFormModel account = TempData.Get<AccountFormModel>("firstUserAcc");
             account.DOB = DateTime.Now;
             return View(account);
         }
@@ -121,7 +122,6 @@ namespace PFD_OCBC_Group5.Controllers
                     return RedirectToAction("UploadPhoto", "NSPVerification");
                 }
 
-                
             }
 
             return RedirectToAction("Index", "Home");

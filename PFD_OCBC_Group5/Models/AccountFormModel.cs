@@ -68,6 +68,5 @@ namespace PFD_OCBC_Group5.Models
         public string HomeNumber { get; set; }
 
         public string AccountCreated { get; set; }
-
     }
 }

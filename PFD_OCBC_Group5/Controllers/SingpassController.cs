@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using PFD_OCBC_Group5.Models;
 using PFD_OCBC_Group5.DAL;
+using PFD_OCBC_Group5.Extensions;
 
 namespace PFD_OCBC_Group5.Controllers
 {
@@ -18,20 +19,22 @@ namespace PFD_OCBC_Group5.Controllers
             return View();
         }
 
-
         public ActionResult SingpassLogin()
         {
             HttpContext.Session.SetString("Type", "Singpass");
             return View();
         }
+
         [HttpPost]
         public ActionResult SingpassLogin(string nric)
         {
             if (AccountContext.AccountExists(nric))
             {
                 AccountFormModel account = AccountContext.GetApplicantInfo(nric);
+                TempData.Put("firstUserAcc", account);
 
-                return View(account);
+                // Redirect to form if Singpass account exists
+                return RedirectToAction("PersonInfo", "AccountForm");
             }
             else
             {
