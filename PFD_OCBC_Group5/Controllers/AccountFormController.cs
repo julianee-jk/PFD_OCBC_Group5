@@ -26,7 +26,7 @@ namespace PFD_OCBC_Group5.Controllers
             return View();
         }
 
-        public ActionResult PersonInfo(string nric)
+        public ActionResult PersonInfo()
         {
             AccountFormModel account = TempData.Get<AccountFormModel>("firstUserAcc");
             account.DOB = DateTime.Now;
