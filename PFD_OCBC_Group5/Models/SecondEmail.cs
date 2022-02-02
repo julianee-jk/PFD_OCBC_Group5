@@ -17,5 +17,9 @@ namespace PFD_OCBC_Group5.Models
         [EmailAddress]
         [Required(ErrorMessage = "Please enter a an email address!")]
         public String ConfirmEmailAddr { get; set; }
+
+        [Display(Name = "Relationship To Applicant")]
+        [Required(ErrorMessage = "Please enter your relationship with the applicant!")]
+        public String RelationShipToApplicant { get; set; }
     }
 }
