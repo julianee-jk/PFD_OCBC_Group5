@@ -24,12 +24,18 @@ namespace PFD_OCBC_Group5.Controllers
         {
             return View();
         }
-        public async Task<ActionResult> SingpassLogin()
+
+        public async Task<ActionResult> SingpassLogin(int currentUser)
         {
+            Debug.WriteLine(currentUser);
+
+            if (currentUser == 2) 
+            {
+                HttpContext.Session.SetString("Applicant", "Second");
+            }
+
             var accountHolderList = new List<AccountFormModel>();
             var singpassUserlist = new List<SingpassModel>();
-
-
 
             DateTime test;
             test = new DateTime(1990, 11, 17);
@@ -42,8 +48,6 @@ namespace PFD_OCBC_Group5.Controllers
             var result = await firebaseClient
               .Child("AccountHolder")
               .PostAsync(currentAccountHolder);
-
-            
 
             var result2 = await firebaseClient
               .Child("SingpassUser")
@@ -71,14 +75,11 @@ namespace PFD_OCBC_Group5.Controllers
                 tempSingpass.PostalCode = singpass.PostalCode;
 
                 singpassUserlist.Add(tempSingpass);
-
             }
-
 
             var accountHolders = await firebaseClient
               .Child("AccountHolder")
               .OnceAsync<AccountFormModel>();
-
 
             foreach (var x in accountHolders)
             {
@@ -86,8 +87,6 @@ namespace PFD_OCBC_Group5.Controllers
                 AccountFormModel temp = new AccountFormModel();
 
                 temp.AccountID = account.AccountID;
-
-                
 
                 temp.NRIC = account.NRIC == "False" ?  "" : account.NRIC;
 
@@ -131,8 +130,6 @@ namespace PFD_OCBC_Group5.Controllers
 
             TempData.Put("accountHolderList", accountHolderList);
             TempData.Put("singpassUserList", singpassUserlist);
-            
-           
 
             HttpContext.Session.SetString("Type", "Singpass");
             return View();
@@ -159,7 +156,6 @@ namespace PFD_OCBC_Group5.Controllers
                     //checking if user exists
                     userExists = true;
                     
-
                     Debug.WriteLine(singpassUser.Password);
                     if (singpassUser.Password == password)
                     {
