@@ -9,6 +9,11 @@ using PFD_OCBC_Group5.Models;
 using PFD_OCBC_Group5.DAL;
 using System.Diagnostics;
 using PFD_OCBC_Group5.Extensions;
+using FireSharp.Config;
+using FireSharp.Interfaces;
+using FireSharp.Response;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,8 +22,24 @@ namespace PFD_OCBC_Group5.Controllers
 {
     public class AccountFormController : Controller
     {
+        IFirebaseConfig config = new FirebaseConfig
+        {
+            BasePath = "https://pfd-group-5-default-rtdb.firebaseio.com/"
+        };
+        IFirebaseClient client;
+
         private AccountDAL AccountContext = new AccountDAL();
         private JointAccountDAL JointAccountContext = new JointAccountDAL();
+
+        private void AddStudentToFirebase(AccountFormModel account)
+        {
+            client = new FireSharp.FirebaseClient(config);
+            var data = account;
+            PushResponse response = client.Push("AccountHolder/", data);
+            data.UniqueID = response.Result.name;
+            Debug.WriteLine(data.UniqueID);
+            SetResponse setResponse = client.Set("AccountHolder/" + data.UniqueID, data);
+        }
 
         // GET: /<controller>/
         public IActionResult Index()
@@ -36,7 +57,7 @@ namespace PFD_OCBC_Group5.Controllers
         [HttpPost]
         public ActionResult PersonInfo(string nric,string MobileNo)
         {
-
+            Debug.WriteLine("Submit");
             if(HttpContext.Session.GetString("Status") == "Continue")
             {
                 string temp;
@@ -73,43 +94,71 @@ namespace PFD_OCBC_Group5.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
+
         [HttpPost]
         public ActionResult Saveme(AccountFormModel account)
         {
             bool flag = false;
 
-            string[] temp = new string[] { };
-
-            temp.Append(account.Occupation);
-            temp.Append(account.PR);
-            temp.Append(account.Gender);
-            temp.Append(account.SelfEmployed);
-            temp.Append(account.HomeAddress);
-            temp.Append(account.PostalCode);
-            temp.Append(account.Email);
-            temp.Append(account.MobileNumber);
-
-            foreach (string x in temp)
+            if (account.Occupation == null || account.PR == null || account.Gender == null || account.SelfEmployed == null || account.HomeAddress == null || account.PostalCode == null || account.Email == null || account.MobileNumber == null)
             {
-                if (x == null)
+                Debug.WriteLine("null");
+                flag = true;
+            }   
+
+            client = new FireSharp.FirebaseClient(config);
+            FirebaseResponse response = client.Get("AccountHolder");
+            dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
+            var list = new List<AccountFormModel>();
+            var accexist = false;
+            if (data != null)
+            {
+                foreach (var item in data)
                 {
-                    flag = true;
-                    break;
+                    list.Add(JsonConvert.DeserializeObject<AccountFormModel>(((JProperty)item).Value.ToString()));
+                }
+            }
+
+            foreach (var x in list)
+            {
+                if (x.NRIC == account.NRIC)
+                {
+                    if (x.AccountCreated == "N")
+                    {
+                        accexist = true;
+                        account.UniqueID = x.UniqueID;
+                        break;
+                    }
+
                 }
             }
 
             if (!flag)
             {
+                if(accexist)
+                {
+                    client = new FireSharp.FirebaseClient(config);
+                    SetResponse setResponse = client.Set("AccountHolder/" + account.UniqueID, account);
+                }
+                else
+                {
+                    account.AccountCreated = "N";
+                    AddStudentToFirebase(account);
+                }
+                /*
                 if (AccountContext.AccountExists(account.NRIC))
                 {
+                    //update account
                     account.AccountCreated = "Y";
                     AccountContext.Update(account);
                 }
                 else
                 {
+                    //create new account
                     account.AccountCreated = "N";
                     AccountContext.Add(account);
-                }
+                }*/
 
                 if (HttpContext.Session.GetString("Type") == "Singpass")
                 {
@@ -131,7 +180,6 @@ namespace PFD_OCBC_Group5.Controllers
         public ActionResult Savemesecond(AccountFormModel account, string testing)
         {
             bool flag = false;
-
             string[] temp = new string[] { };
 
             temp.Append(account.Occupation);
@@ -187,18 +235,43 @@ namespace PFD_OCBC_Group5.Controllers
         [HttpPost]
         public ActionResult save(AccountFormModel account)
         {
-            account.AccountCreated = "N";
-
-            if (AccountContext.AccountExists(account.NRIC))
+            client = new FireSharp.FirebaseClient(config);
+            FirebaseResponse response = client.Get("AccountHolder");
+            dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
+            var list = new List<AccountFormModel>();
+            var flag = false;
+            if (data != null)
             {
-                AccountContext.Update(account);
-                return RedirectToAction("Index", "Home");
+                foreach (var item in data)
+                {
+                    list.Add(JsonConvert.DeserializeObject<AccountFormModel>(((JProperty)item).Value.ToString()));
+                }
+            }
+            
+            foreach (var x in list)
+            {
+                if (x.NRIC == account.NRIC)
+                {
+                    if(x.AccountCreated == "N")
+                    {
+                        flag = true;
+                        account.UniqueID = x.UniqueID;
+                        break;
+                    }
+
+                }
+            }
+            if (flag)
+            {
+                client = new FireSharp.FirebaseClient(config);
+                SetResponse setResponse = client.Set("AccountHolder/" + account.UniqueID, account);
             }
             else
             {
-                AccountContext.Add(account);
-                return RedirectToAction("Index", "Home");
+                account.AccountCreated = "N";
+                AddStudentToFirebase(account);
             }
+            return RedirectToAction("Index", "Home");
         }
     }
 }

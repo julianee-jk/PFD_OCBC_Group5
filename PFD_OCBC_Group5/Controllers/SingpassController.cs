@@ -10,6 +10,9 @@ using PFD_OCBC_Group5.Extensions;
 using Firebase.Database;
 using Firebase.Database.Query;
 using System.Diagnostics;
+using FireSharp.Config;
+using FireSharp.Interfaces;
+using FireSharp.Response;
 
 namespace PFD_OCBC_Group5.Controllers
 {
@@ -21,7 +24,6 @@ namespace PFD_OCBC_Group5.Controllers
         {
             return View();
         }
-
         public async Task<ActionResult> SingpassLogin()
         {
             var accountHolderList = new List<AccountFormModel>();
@@ -34,17 +36,19 @@ namespace PFD_OCBC_Group5.Controllers
             var firebaseClient = new FirebaseClient("https://pfd-group-5-default-rtdb.firebaseio.com/");
 
             /*
+            var singpassUser = new SingpassModel() { NRIC = "S2929292H", Password = "Password1.", DOB = test, Email = "Rad@gmail.com", Gender = "F", HomeAddress = "SK Road 54", PostalCode = "123123", MobileNumber = "91212351", Name = "Rad", Nationality = "Singaporean" };
             var currentAccountHolder = new AccountFormModel() { AccountID = 1, NRIC = "S1234567C", Name = "Duby" , Salutation = "Miss", Nationality = "Singaporean", DOB = test, Occupation = "Restaurant Owner", PR = "N", Gender = "F", SelfEmployed = "Y", NatureOfBusiness = "Manages a restaurant", HomeAddress = "Clementi Road 54", PostalCode = "583957", MailingAddress = "31 Lifebouy Road" , MailingPostalCode = "561292", Email = "Duby@gmail.com", MobileNumber = "98708394", HomeNumber = "False", AccountCreated = "N" };
             
             var result = await firebaseClient
               .Child("AccountHolder")
               .PostAsync(currentAccountHolder);
 
-            var singpassUser = new SingpassModel() { NRIC = "S1234567C", Password = "Password123.", DOB = test, Email = "Duby@gmail.com", Gender = "F", HomeAddress = "Clementi Road 54", PostalCode = "583957", MobileNumber = "98708394", Name = "Duby", Nationality = "Singaporean" };
+            
 
             var result2 = await firebaseClient
               .Child("SingpassUser")
               .PostAsync(singpassUser);
+            AddStudentToFirebase(singpassUser);
              */
 
             var singpassAccounts = await firebaseClient
