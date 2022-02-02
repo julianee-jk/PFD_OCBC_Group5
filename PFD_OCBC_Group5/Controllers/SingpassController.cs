@@ -25,13 +25,14 @@ namespace PFD_OCBC_Group5.Controllers
             return View();
         }
 
-        public async Task<ActionResult> SingpassLogin(int currentUser)
+        public async Task<ActionResult> SingpassLogin(int currentUser, int accId)
         {
-            Debug.WriteLine(currentUser);
-
             if (currentUser == 2) 
             {
                 HttpContext.Session.SetString("Applicant", "Second");
+
+                // Save the accId to be passed to the joint account controller
+                HttpContext.Session.SetInt32("FirstUserAccID", accId);
             }
 
             var accountHolderList = new List<AccountFormModel>();
@@ -151,8 +152,6 @@ namespace PFD_OCBC_Group5.Controllers
             {
                 if(singpassUser.NRIC == nric)
                 {
-                    Debug.WriteLine(nric);
-                    Debug.WriteLine(singpassUser.NRIC);
                     //checking if user exists
                     userExists = true;
                     
@@ -185,7 +184,6 @@ namespace PFD_OCBC_Group5.Controllers
                         }
                     }
                 }
-
 
                 if(existingForm)
                 {
