@@ -8,6 +8,8 @@ namespace PFD_OCBC_Group5.Models
 {
     public class SingpassModel
     {
+        public string SingpassID { get; set; }
+
         [Display(Name = "NRIC")]
         [Required(ErrorMessage = "Please enter a valid NRIC number.")]
         [MaxLength(9)]
