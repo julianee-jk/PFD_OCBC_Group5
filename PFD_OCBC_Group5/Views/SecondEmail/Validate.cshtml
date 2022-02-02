@@ -23,13 +23,18 @@ else
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="EmailAddr" class="control-label"></label>
-                <input name="EmailAddr" asp-for="EmailAddr" class="form-control"/>
+                <input name="EmailAddr" asp-for="EmailAddr" class="form-control" />
                 <span asp-validation-for="EmailAddr" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ConfirmEmailAddr" class="control-label"></label>
-                <input asp-for="ConfirmEmailAddr" class="form-control" onpaste="return false;" ondrop="return false;"/>
+                <input asp-for="ConfirmEmailAddr" class="form-control" onpaste="return false;" ondrop="return false;" />
                 <span asp-validation-for="ConfirmEmailAddr" class="text-danger">@ViewBag.MismatchNum</span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RelationShipToApplicant" class="control-label"></label>
+                <input asp-for="RelationShipToApplicant" class="form-control" onpaste="return false;" ondrop="return false;" />
+                <span asp-validation-for="RelationShipToApplicant" class="text-danger"></span>
             </div>
             <div class="form-group">
                 @if (Context.Session.GetString("Status") != "Continue")
