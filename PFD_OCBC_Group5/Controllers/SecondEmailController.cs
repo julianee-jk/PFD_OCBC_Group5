@@ -33,8 +33,11 @@ namespace PFD_OCBC_Group5.Controllers
                 {
                     HttpContext.Session.SetString("Applicant", "Second");
 
+                    string accId = HttpContext.Session.GetInt32("AccountID").ToString();
+
                     // Link to send to second person via Email - TO:DO
-                    string secondPersonLink = "https://localhost:44382/Singpass/SingpassLogin?currentUser=2";
+                    // Need to check if is singpass user or not
+                    string secondPersonLink = "https://localhost:44382/Singpass/SingpassLogin?currentUser=2&accId=" + accId;
 
                     // Email body text
                     string messageBody = @"Dear user," + "\n" +
