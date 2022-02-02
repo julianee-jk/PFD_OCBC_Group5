@@ -15,88 +15,25 @@ namespace PFD_OCBC_Group5.Controllers
         // GET: JointAccountController
         // Auto-create account in DAL and retrieve auto-incremented PK as Account Number
         // Retrieve OwnerNRIC, JointNRIC and Relationship through TempData passing
-        private AccountDAL AccountContext = new AccountDAL();
-        private JointAccountDAL JointAccountContext = new JointAccountDAL();
-        public ActionResult Index(JointAccountView jointAccount)
+
+        public ActionResult Index()
         {
-            JointAccountModel ja = new JointAccountModel();
-            ja.OwnerNRIC = HttpContext.Session.GetString("FirstNRIC");
-            ja.JointNRIC = HttpContext.Session.GetString("SecondNRIC");
-            ja.RelationshipToOwner = HttpContext.Session.GetString("SPRelationship");
-            ja.AccountNumber = (int)HttpContext.Session.GetInt32("AccountNum");
+            Debug.WriteLine("First: " + HttpContext.Session.GetInt32("FirstUserAccID"));
+            Debug.WriteLine("Second: " + HttpContext.Session.GetInt32("SecondUserAccID"));
 
-            JointAccountView jaView = new JointAccountView();
-            jaView.firstName = AccountContext.GetApplicantInfo(ja.OwnerNRIC).Name;
-            jaView.secondName = AccountContext.GetApplicantInfo(ja.JointNRIC).Name;
+            //JointAccountModel ja = new JointAccountModel();
+            //ja.OwnerNRIC = HttpContext.Session.GetString("FirstNRIC");
+            //ja.JointNRIC = HttpContext.Session.GetString("SecondNRIC");
+            //ja.RelationshipToOwner = HttpContext.Session.GetString("SPRelationship");
+            //ja.AccountNumber = (int)HttpContext.Session.GetInt32("AccountNum");
 
-            jaView.ja = ja;
+            //JointAccountView jaView = new JointAccountView();
+            //jaView.firstName = AccountContext.GetApplicantInfo(ja.OwnerNRIC).Name;
+            //jaView.secondName = AccountContext.GetApplicantInfo(ja.JointNRIC).Name;
 
-            return View(jaView);
-        }
+            //jaView.ja = ja;
 
-        [HttpPost]
-        public ActionResult Index(AccountFormModel account, string testing)
-        {
-            bool flag = false;
-
-            string[] temp = new string[] { };
-
-            temp.Append(account.Occupation);
-            temp.Append(account.PR);
-            temp.Append(account.Gender);
-            temp.Append(account.SelfEmployed);
-            temp.Append(account.HomeAddress);
-            temp.Append(account.PostalCode);
-            temp.Append(account.Email);
-            temp.Append(account.MobileNumber);
-            temp.Append(testing);
-
-            foreach (string x in temp)
-            {
-                if (x == null)
-                {
-                    flag = true;
-                    break;
-                }
-            }
-
-            if (!flag)
-            {
-                if (AccountContext.AccountExists(account.NRIC))
-                {
-                    account.AccountCreated = "N";
-                    AccountContext.Update(account);
-                }
-                else
-                {
-                    //need to change
-                    account.AccountCreated = "N";
-                    AccountContext.Add(account);
-                }
-
-                JointAccountModel ja = new JointAccountModel();
-                ja.OwnerNRIC = HttpContext.Session.GetString("FirstNRIC");
-                ja.JointNRIC = account.NRIC;
-                ja.RelationshipToOwner = testing;
-                ja.AccountNumber = JointAccountContext.Add(ja);
-
-                JointAccountView jaView = new JointAccountView();
-                jaView.firstName = AccountContext.GetApplicantInfo(ja.OwnerNRIC).Name;
-                jaView.secondName = AccountContext.GetApplicantInfo(ja.JointNRIC).Name;
-
-                JointAccountContext.UpdateCreateAccount(ja.OwnerNRIC);
-                JointAccountContext.UpdateCreateAccount(ja.JointNRIC);
-
-                jaView.ja = ja;
-
-                HttpContext.Session.SetString("SecondNRIC", account.NRIC);
-                HttpContext.Session.SetString("SPRelationship", testing);
-                HttpContext.Session.SetInt32("AccountNum", ja.AccountNumber);
-
-                return View(jaView);
-            }
-
-            return RedirectToAction("Index", "Home");
+            return View();
         }
     }
 }
