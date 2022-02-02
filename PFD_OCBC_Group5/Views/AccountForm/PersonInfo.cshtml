@@ -270,14 +270,7 @@
         </div>
         <div class="buttons">
             <input type="submit" value="Save" class="buttonstyle" />
-            @if (Context.Session.GetString("Applicant") != "Second")
-            {
-                <button type="submit" class="buttonstyle" asp-action="saveme">Submit</button>
-            }
-            else
-            {
-                <button type="submit" class="buttonstyle" asp-controller="JointAccount" asp-action="Index">Submit</button>
-            }
+            <button type="submit" class="buttonstyle" asp-action="saveme">Submit</button>
         </div>
     </form>
 </div>
