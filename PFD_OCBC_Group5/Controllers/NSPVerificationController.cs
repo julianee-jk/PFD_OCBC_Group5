@@ -52,7 +52,6 @@ namespace PFD_OCBC_Group5.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UploadPhoto(NSPVerification verification, IFormFile photo )
         {
-
             verification.NRIC = HttpContext.Session.GetString("FirstNRIC");
             verification.VerificationDate = DateTime.Now;
 
@@ -99,9 +98,16 @@ namespace PFD_OCBC_Group5.Controllers
                     ViewData["VerificationMessage"] = ex.Message;
                 }
             }
-        
 
-            return RedirectToAction("Validate", "SecondEmail");
+            // Return redirect based on the current user
+            if (HttpContext.Session.GetString("Applicant") == "Second")
+            {
+                return RedirectToAction("Index", "JointAccount");
+            }
+            else
+            {
+                return RedirectToAction("Validate", "SecondEmail");
+            }
         }
     }
 }
