@@ -89,6 +89,7 @@ namespace PFD_OCBC_Group5.Controllers
                         accexist = true;
                         account.UniqueID = x.UniqueID;
                         account.AccountID = x.AccountID;
+                        account.AccountCreated = x.AccountCreated;
                         break;
                     }
                 }
@@ -174,6 +175,7 @@ namespace PFD_OCBC_Group5.Controllers
                         flag = true;
                         account.UniqueID = x.UniqueID;
                         account.AccountID = x.AccountID;
+                        account.AccountCreated = x.AccountCreated;
                         break;
                     }
                 }
