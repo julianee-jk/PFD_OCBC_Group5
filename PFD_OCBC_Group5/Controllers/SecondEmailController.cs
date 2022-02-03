@@ -37,6 +37,12 @@ namespace PFD_OCBC_Group5.Controllers
                     // Link to send to second person via Email
                     string secondPersonLink = "https://localhost:44382/Singpass/SingpassLogin?currentUser=2&accId=" + accId + "&rel=" + secondEmail.RelationShipToApplicant;
 
+                    if (HttpContext.Session.GetString("Type") == "NonSP")
+                        secondPersonLink = "https://localhost:44382/NonSP/PersonInfo?currentUser=2&accId=" + accId + "&rel=" + secondEmail.RelationShipToApplicant;
+
+                    Debug.WriteLine(HttpContext.Session.GetString("Type"));
+                    Debug.WriteLine(secondPersonLink);
+
                     // Email body text
                     string messageBody = @"Dear user," + "\n" +
                                               "You have been invited to an OCBC Joint-Account as the second applicant." + "\n"
@@ -46,15 +52,9 @@ namespace PFD_OCBC_Group5.Controllers
                     // Send Email here
                     SendEmail("OCBC Joint-Account Creation - 2nd Applicant", messageBody, secondEmail.ConfirmEmailAddr);
 
-                    if (HttpContext.Session.GetString("Type") == "Singpass")
-                    {
-                        // Redirect the first applicant to the Awaiting/Index page
-                        return RedirectToAction("Index", "Awaiting");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home"); // TO:DO
-                    }
+
+                    // Redirect the first applicant to the Awaiting/Index page
+                    return RedirectToAction("Index", "Awaiting");
                 }
                 else
                 {
