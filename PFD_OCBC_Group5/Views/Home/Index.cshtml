@@ -4,6 +4,9 @@
 
 <div id="main_box">
     <div class="inner_main_box">
+        
+
+
         <h2><strong>Non-Singpass Holders</strong></h2>
         <h6>Both applicants do not have Singpass</h6>
 
@@ -21,6 +24,8 @@
 
         <a asp-controller="Singpass" asp-action="SingpassLogin" asp-route-currentUser="1" class="btn btn-outline-danger register-btn" id="singpass-holder-btn">Register / Login</a>
         <p>This will redirect you to Singpass link.</p>
+        <a asp-controller="Singpass" asp-action="SingpassRegister" class="btn btn-outline-danger register-btn" id="singpass-holder-btn">Register / Login</a>
+        <p>This will redirect you to Singpass register link.</p>
     </div>
 
 </div>
