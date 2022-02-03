@@ -25,14 +25,18 @@ namespace PFD_OCBC_Group5.Controllers
             return View();
         }
 
-        public async Task<ActionResult> SingpassLogin(int currentUser, int accId)
+        public async Task<ActionResult> SingpassLogin(int currentUser, int accId, string rel)
         {
             if (currentUser == 2) 
             {
+                // Set the session state to the second user
                 HttpContext.Session.SetString("Applicant", "Second");
 
                 // Save the accId to be passed to the joint account controller
                 HttpContext.Session.SetInt32("FirstUserAccID", accId);
+
+                // Save the owner's relationship with the second applicant
+                HttpContext.Session.SetString("RelationshipWithOwner", rel);
             }
 
             var accountHolderList = new List<AccountFormModel>();
