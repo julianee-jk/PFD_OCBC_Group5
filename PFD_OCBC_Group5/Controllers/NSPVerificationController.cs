@@ -101,7 +101,7 @@ namespace PFD_OCBC_Group5.Controllers
             }
         
 
-            return RedirectToAction("Validate", "SecondMobile");
+            return RedirectToAction("Validate", "SecondEmail");
         }
     }
 }
