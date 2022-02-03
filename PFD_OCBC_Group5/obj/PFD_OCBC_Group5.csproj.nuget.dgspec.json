@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\julia\\source\\repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj": {}
+    "C:\\Users\\julia\\source\\repos\\PFD_OCBC_Prototype_Group5\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj": {}
   },
   "projects": {
-    "C:\\Users\\julia\\source\\repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj": {
+    "C:\\Users\\julia\\source\\repos\\PFD_OCBC_Prototype_Group5\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\julia\\source\\repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj",
+        "projectUniqueName": "C:\\Users\\julia\\source\\repos\\PFD_OCBC_Prototype_Group5\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj",
         "projectName": "PFD_OCBC_Group5",
-        "projectPath": "C:\\Users\\julia\\source\\repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj",
+        "projectPath": "C:\\Users\\julia\\source\\repos\\PFD_OCBC_Prototype_Group5\\PFD_OCBC_Group5\\PFD_OCBC_Group5.csproj",
         "packagesPath": "C:\\Users\\julia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\julia\\source\\repos\\PFD_OCBC_Group5\\PFD_OCBC_Group5\\obj\\",
+        "outputPath": "C:\\Users\\julia\\source\\repos\\PFD_OCBC_Prototype_Group5\\PFD_OCBC_Group5\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\julia\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,18 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "EPPlus": {
+              "target": "Package",
+              "version": "[5.8.6, )"
+            },
+            "FireSharp": {
+              "target": "Package",
+              "version": "[2.0.4, )"
+            },
+            "FirebaseDatabase.net": {
+              "target": "Package",
+              "version": "[4.0.7, )"
+            },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.1.5, )"
@@ -67,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
         }
       }
     }
