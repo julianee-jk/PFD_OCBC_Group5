@@ -9,15 +9,17 @@ namespace PFD_OCBC_Group5.Models
     public class JointAccountModel
     {
         [Display(Name = "Account Number")]
-        public int AccountNumber { get; set; }
+        public string AccountNumber { get; set; }
 
-        [Display(Name = "Main Account Holder's NRIC")]
+        [Display(Name = "First Applicant's NRIC")]
         public string OwnerNRIC { get; set; }
 
-        [Display(Name = "Joint Account Holder's NRIC")]
+        [Display(Name = "Second Applicant's NRIC")]
         public string JointNRIC { get; set; }
 
-        [Required(ErrorMessage = "Please enter your relationship with the main account holder.")]
+        [Display(Name = "Relationship of Second Applicant with Owner")]
         public string RelationshipToOwner { get; set; }
+
+        public string UniqueID { get; set; }
     }
 }
