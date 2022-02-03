@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Firebase.Database;
+using Firebase.Database.Query;
 
 namespace PFD_OCBC_Group5.Controllers
 {
@@ -20,7 +22,7 @@ namespace PFD_OCBC_Group5.Controllers
         }
 
         public IActionResult Index()
-        {
+        { 
             HttpContext.Session.SetString("Status", "New");
             HttpContext.Session.SetString("Applicant", "First");
             return View();

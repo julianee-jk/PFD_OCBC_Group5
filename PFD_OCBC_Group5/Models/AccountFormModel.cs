@@ -6,6 +6,11 @@ namespace PFD_OCBC_Group5.Models
 {
     public class AccountFormModel
     {
+        public string UniqueID { get; set; }
+
+        [Required]
+        public int AccountID { get; set; }
+
         [Required]
         [StringLength(9)]
         public string NRIC { get; set; }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using PFD_OCBC_Group5.Models;
 using System.Net.Mail;
+using System.Diagnostics;
 
 namespace PFD_OCBC_Group5.Controllers
 {
@@ -32,22 +33,24 @@ namespace PFD_OCBC_Group5.Controllers
                 {
                     HttpContext.Session.SetString("Applicant", "Second");
 
+                    string accId = HttpContext.Session.GetInt32("AccountID").ToString();
+
                     // Link to send to second person via Email - TO:DO
-                    // string secondPersonLink = "https://localhost:44382/AccountForm/PersonInfo?userId=" + ;
+                    // Need to check if is singpass user or not
+                    string secondPersonLink = "https://localhost:44382/Singpass/SingpassLogin?currentUser=2&accId=" + accId;
 
                     // Email body text
-                    /*string messageBody = @"Dear user," + "\n" +
+                    string messageBody = @"Dear user," + "\n" +
                                               "You have been invited to an OCBC Joint-Account as the second applicant." + "\n"
                                             + "Please click on the link below to continue the process." + "\n\n"
-                                            + "OCBC Joint-Account Application Link: " + secondPersonLink;*/
+                                            + "OCBC Joint-Account Application Link: " + secondPersonLink;
 
                     // Send Email here
-                    // SendEmail("OCBC Joint-Account Creation - 2nd Applicant", messageBody, secondEmail.ConfirmEmailAddr);
-
+                    SendEmail("OCBC Joint-Account Creation - 2nd Applicant", messageBody, secondEmail.ConfirmEmailAddr);
 
                     if (HttpContext.Session.GetString("Type") == "Singpass")
                     {
-                        //Redirect user to Awaiting/Index page
+                        // Redirect the first applicant to the Awaiting/Index page
                         return RedirectToAction("Index", "Awaiting");
                     }
                     else
