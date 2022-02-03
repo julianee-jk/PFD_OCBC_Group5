@@ -1,0 +1,79 @@
+﻿@model PFD_OCBC_Group5.Models.ValidateConfirmPassword
+
+@{
+    ViewData["Title"] = "SingpassRegister";
+}
+
+<h1>Singpass Login</h1>
+
+<div>
+    <hr />
+    <form asp-controller="Singpass" asp-action="SingpassRegister">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="segmented-row">
+            <div class="form-group">
+                <label asp-for="accountInformation.NRIC" class="control-label"></label>
+                <input asp-for="accountInformation.NRIC" class="form-control" required />
+                <span asp-validation-for="accountInformation.NRIC" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="accountInformation.Name" class="control-label"></label>
+                <input asp-for="accountInformation.Name" class="form-control" required />
+                <span asp-validation-for="accountInformation.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="accountInformation.PostalCode" class="control-label"></label>
+                <input asp-for="accountInformation.PostalCode" class="form-control" required />
+                <span asp-validation-for="accountInformation.PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="accountInformation.DOB" class="control-label"></label>
+                <input asp-for="accountInformation.DOB" class="form-control" required />
+                <span asp-validation-for="accountInformation.DOB" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="accountInformation.Gender" class="control-label"></label>
+                <input asp-for="accountInformation.Gender" class="form-control" required />
+                <span asp-validation-for="accountInformation.Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="accountInformation.HomeAddress" class="control-label"></label>
+                <input asp-for="accountInformation.HomeAddress" class="form-control" required />
+                <span asp-validation-for="accountInformation.HomeAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="accountInformation.PostalCode" class="control-label"></label>
+                <input asp-for="accountInformation.PostalCode" class="form-control" required />
+                <span asp-validation-for="accountInformation.PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="accountInformation.Email" class="control-label"></label>
+                <input asp-for="accountInformation.Email" class="form-control" required />
+                <span asp-validation-for="accountInformation.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="accountInformation.MobileNumber" class="control-label"></label>
+                <input asp-for="accountInformation.MobileNumber" class="form-control" required />
+                <span asp-validation-for="accountInformation.MobileNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="accountInformation.Password" class="control-label"></label>
+                <input asp-for="accountInformation.Password" class="form-control" required />
+                <span asp-validation-for="accountInformation.Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="cfmPassword" class="control-label"></label>
+                <input asp-for="cfmPassword" class="form-control" required />
+                <span asp-validation-for="cfmPassword" class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <div class="buttons">
+            <button type="submit" class="buttonstyle" asp-action="SingpassRegister">Register</button>
+        </div>
+    </form>
+</div>
