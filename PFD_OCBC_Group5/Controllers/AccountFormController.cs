@@ -29,7 +29,6 @@ namespace PFD_OCBC_Group5.Controllers
         IFirebaseClient client;
 
         private AccountDAL AccountContext = new AccountDAL();
-        private JointAccountDAL JointAccountContext = new JointAccountDAL();
 
         private void AddStudentToFirebase(AccountFormModel account)
         {

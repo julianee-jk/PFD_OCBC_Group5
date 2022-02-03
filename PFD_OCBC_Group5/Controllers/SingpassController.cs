@@ -13,26 +13,47 @@ using System.Diagnostics;
 using FireSharp.Config;
 using FireSharp.Interfaces;
 using FireSharp.Response;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace PFD_OCBC_Group5.Controllers
 {
     public class SingpassController : Controller
     {
         private AccountDAL AccountContext = new AccountDAL();
+        IFirebaseConfig config = new FirebaseConfig
+        {
+            BasePath = "https://pfd-group-5-default-rtdb.firebaseio.com/"
+        };
+        IFirebaseClient client;
+
+        private void AddSingpassUser(SingpassModel account)
+        {
+            client = new FireSharp.FirebaseClient(config);
+            var data = account;
+            PushResponse response = client.Push("SingpassUser/", data);
+            data.SingpassID = response.Result.name;
+            Debug.WriteLine(data.SingpassID);
+            SetResponse setResponse = client.Set("SingpassUser/" + data.SingpassID, data);
+        }
 
         public IActionResult Index()
         {
             return View();
         }
 
-        public async Task<ActionResult> SingpassLogin(int currentUser, int accId)
+        public async Task<ActionResult> SingpassLogin(int currentUser, int accId, string rel)
         {
             if (currentUser == 2) 
             {
+                // Set the session state to the second user
                 HttpContext.Session.SetString("Applicant", "Second");
 
                 // Save the accId to be passed to the joint account controller
                 HttpContext.Session.SetInt32("FirstUserAccID", accId);
+
+                // Save the owner's relationship with the second applicant
+                HttpContext.Session.SetString("RelationshipWithOwner", rel);
             }
 
             var accountHolderList = new List<AccountFormModel>();
@@ -136,6 +157,73 @@ namespace PFD_OCBC_Group5.Controllers
             return View();
         }
 
+        public ActionResult SingpassRegister()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult SingpassRegister(ValidateConfirmPassword account)
+        {
+
+            if (account.cfmPassword == account.accountInformation.Password)
+            {
+
+                client = new FireSharp.FirebaseClient(config);
+                FirebaseResponse response = client.Get("SingpassUser");
+                dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
+                var singpassAccountList = new List<AccountFormModel>();
+                if (data != null)
+                {
+                    foreach (var item in data)
+                    {
+                        singpassAccountList.Add(JsonConvert.DeserializeObject<AccountFormModel>(((JProperty)item).Value.ToString()));
+                    }
+                }
+
+                var exists = false;
+                foreach(var dbAccount in singpassAccountList)
+                {
+                    if(dbAccount.NRIC == account.accountInformation.NRIC)
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if(!exists)
+                {
+                    //insert into firebase
+                    Debug.WriteLine("Inserted into firebase");
+
+
+                    AddSingpassUser(account.accountInformation);
+
+
+                }
+                else
+                {
+                    Debug.WriteLine("Singpass account already exist");
+
+
+
+                }
+                
+
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                //passwords were not the same
+                return View(account);
+            }
+
+            
+        }
+
+
         [HttpPost]
         public ActionResult SingpassLogin(string nric, string password)
         {
@@ -216,5 +304,10 @@ namespace PFD_OCBC_Group5.Controllers
             
 
         }
+
+
+
+
+
     }
 }

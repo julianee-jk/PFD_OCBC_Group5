@@ -27,7 +27,6 @@ namespace PFD_OCBC_Group5.Controllers
         IFirebaseClient client;
 
         private AccountDAL AccountContext = new AccountDAL();
-        private JointAccountDAL JointAccountContext = new JointAccountDAL();
 
         private void AddStudentToFirebase(AccountFormModel account)
         {
@@ -40,13 +39,27 @@ namespace PFD_OCBC_Group5.Controllers
         }
 
         // GET: NonSPControllercs
-        public ActionResult PersonInfo()
+        public ActionResult PersonInfo(int currentUser, int accId, string rel)
         {
+            // Set the session type of the user SP / NonSP
+            HttpContext.Session.SetString("Type", "NonSP");
+
+            if (currentUser == 2)
+            {
+                // Set the session state to the second user
+                HttpContext.Session.SetString("Applicant", "Second");
+
+                // Save the accId to be passed to the joint account controller
+                HttpContext.Session.SetInt32("FirstUserAccID", accId);
+
+                // Save the owner's relationship with the second applicant
+                HttpContext.Session.SetString("RelationshipWithOwner", rel);
+            }
+
             AccountFormModel account = new AccountFormModel();
             account.DOB = DateTime.Now;
             return View(account);
         }
-
 
         public ActionResult SubmitAccountInfo(AccountFormModel account)
         {
@@ -54,7 +67,6 @@ namespace PFD_OCBC_Group5.Controllers
 
             if (account.Occupation == null || account.PR == null || account.Gender == null || account.SelfEmployed == null || account.HomeAddress == null || account.PostalCode == null || account.Email == null || account.MobileNumber == null)
             {
-                Debug.WriteLine("null");
                 flag = true;
             }
 
@@ -116,21 +128,11 @@ namespace PFD_OCBC_Group5.Controllers
                     AccountContext.Add(account);
                 }*/
 
-                if (HttpContext.Session.GetString("Type") == "Singpass" && HttpContext.Session.GetString("Applicant") == "First")
-                {
-                    HttpContext.Session.SetInt32("AccountID", account.AccountID);
-                    return RedirectToAction("Validate", "SecondEmail");
-                }
-                else if (HttpContext.Session.GetString("Type") == "Singpass" && HttpContext.Session.GetString("Applicant") == "Second")
-                {
+                if (HttpContext.Session.GetString("Applicant") == "Second")
                     HttpContext.Session.SetInt32("SecondUserAccID", account.AccountID);
-                    return RedirectToAction("Index", "JointAccount");
-                }
-                else
-                {
-                    HttpContext.Session.SetInt32("AccountID", account.AccountID);
-                    return RedirectToAction("UploadPhoto", "NSPVerification");
-                }
+
+                HttpContext.Session.SetInt32("AccountID", account.AccountID);
+                return RedirectToAction("UploadPhoto", "NSPVerification");
             }
 
             return RedirectToAction("Index", "Home");
@@ -145,10 +147,17 @@ namespace PFD_OCBC_Group5.Controllers
         public ActionResult SaveAccountInfo(AccountFormModel account)
         {
             client = new FireSharp.FirebaseClient(config);
+            //retrieve from accountholder in firebase
             FirebaseResponse response = client.Get("AccountHolder");
             dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
-
             var list = new List<AccountFormModel>();
+
+            //retrieve from singpass user in firebase
+            FirebaseResponse response2 = client.Get("SingpassUser");
+            dynamic data2 = JsonConvert.DeserializeObject<dynamic>(response2.Body);
+            var SingpassHolderList = new List<SingpassModel>();
+            var accExistInSP = false;
+
             var flag = false;
 
             if (data != null)
@@ -156,6 +165,27 @@ namespace PFD_OCBC_Group5.Controllers
                 foreach (var item in data)
                 {
                     list.Add(JsonConvert.DeserializeObject<AccountFormModel>(((JProperty)item).Value.ToString()));
+                }
+            }
+
+            if (data2 != null)
+            {
+                foreach (var item in data2)
+                {
+                    SingpassHolderList.Add(JsonConvert.DeserializeObject<SingpassModel>(((JProperty)item).Value.ToString()));
+                }
+            }
+
+            foreach (var x in SingpassHolderList)
+            {
+                if (x.NRIC == account.NRIC)
+                {
+                    accExistInSP = true;
+                    break;
+                }
+                else
+                {
+                    accExistInSP = false;
                 }
             }
 
@@ -173,16 +203,24 @@ namespace PFD_OCBC_Group5.Controllers
                     }
                 }
             }
-            if (flag)
+
+            if (!accExistInSP)
             {
-                client = new FireSharp.FirebaseClient(config);
-                SetResponse setResponse = client.Set("AccountHolder/" + account.UniqueID, account);
+                if (flag)
+                {
+                    client = new FireSharp.FirebaseClient(config);
+                    SetResponse setResponse = client.Set("AccountHolder/" + account.UniqueID, account);
+                }
+                else
+                {
+                    account.AccountID = list.Count + 1;
+                    account.AccountCreated = "N";
+                    AddStudentToFirebase(account);
+                }
             }
             else
             {
-                account.AccountID = list.Count + 1;
-                account.AccountCreated = "N";
-                AddStudentToFirebase(account);
+                Debug.WriteLine("NRIC exists in singpass");
             }
             return RedirectToAction("Index", "Home");
         }

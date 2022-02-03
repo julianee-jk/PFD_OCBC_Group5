@@ -31,13 +31,17 @@ namespace PFD_OCBC_Group5.Controllers
                 // Confirm email
                 if (secondEmail.EmailAddr == secondEmail.ConfirmEmailAddr)
                 {
-                    HttpContext.Session.SetString("Applicant", "Second");
-
+                    // Retrieve accId and relationship
                     string accId = HttpContext.Session.GetInt32("AccountID").ToString();
 
-                    // Link to send to second person via Email - TO:DO
-                    // Need to check if is singpass user or not
-                    string secondPersonLink = "https://localhost:44382/Singpass/SingpassLogin?currentUser=2&accId=" + accId;
+                    // Link to send to second person via Email
+                    string secondPersonLink = "https://localhost:44382/Singpass/SingpassLogin?currentUser=2&accId=" + accId + "&rel=" + secondEmail.RelationShipToApplicant;
+
+                    if (HttpContext.Session.GetString("Type") == "NonSP")
+                        secondPersonLink = "https://localhost:44382/NonSP/PersonInfo?currentUser=2&accId=" + accId + "&rel=" + secondEmail.RelationShipToApplicant;
+
+                    Debug.WriteLine(HttpContext.Session.GetString("Type"));
+                    Debug.WriteLine(secondPersonLink);
 
                     // Email body text
                     string messageBody = @"Dear user," + "\n" +
@@ -48,15 +52,9 @@ namespace PFD_OCBC_Group5.Controllers
                     // Send Email here
                     SendEmail("OCBC Joint-Account Creation - 2nd Applicant", messageBody, secondEmail.ConfirmEmailAddr);
 
-                    if (HttpContext.Session.GetString("Type") == "Singpass")
-                    {
-                        // Redirect the first applicant to the Awaiting/Index page
-                        return RedirectToAction("Index", "Awaiting");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home"); // TO:DO
-                    }
+
+                    // Redirect the first applicant to the Awaiting/Index page
+                    return RedirectToAction("Index", "Awaiting");
                 }
                 else
                 {
