@@ -31,13 +31,11 @@ namespace PFD_OCBC_Group5.Controllers
                 // Confirm email
                 if (secondEmail.EmailAddr == secondEmail.ConfirmEmailAddr)
                 {
-                    HttpContext.Session.SetString("Applicant", "Second");
-
+                    // Retrieve accId and relationship
                     string accId = HttpContext.Session.GetInt32("AccountID").ToString();
 
-                    // Link to send to second person via Email - TO:DO
-                    // Need to check if is singpass user or not
-                    string secondPersonLink = "https://localhost:44382/Singpass/SingpassLogin?currentUser=2&accId=" + accId;
+                    // Link to send to second person via Email
+                    string secondPersonLink = "https://localhost:44382/Singpass/SingpassLogin?currentUser=2&accId=" + accId + "&rel=" + secondEmail.RelationShipToApplicant;
 
                     // Email body text
                     string messageBody = @"Dear user," + "\n" +
