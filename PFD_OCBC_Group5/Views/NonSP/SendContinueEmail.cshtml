@@ -29,7 +29,7 @@
                     <input asp-for="RelationShipToApplicant" class="form-control" onpaste="return false;" ondrop="return false;" value="NA" hidden/>
                     <span asp-validation-for="RelationShipToApplicant" class="text-danger" hidden></span>
                     <div class="text-center">
-                        <span class="text-danger">@TempData["CodeErrorMessage"]@TempData["ValidationEmail"]</span>
+                        <span class="text-danger">@TempData["CodeErrorMessage"]@TempData["IsEmailExist"]</span>
                     </div>
                 </div>
             </div>

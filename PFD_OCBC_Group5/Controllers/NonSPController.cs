@@ -434,8 +434,40 @@ namespace PFD_OCBC_Group5.Controllers
         public ActionResult SendContinueEmail(SecondEmail email)
         {
             client = new FireSharp.FirebaseClient(config);
+            FirebaseResponse response1 = client.Get("AccountHolder");
+
+            dynamic data1 = JsonConvert.DeserializeObject<dynamic>(response1.Body);
+            var accountFormList = new List<AccountFormModel>();
+
+            bool emailExists = false;
+
+            if (data1 != null)
+            {
+                foreach(var item in data1)
+                {
+                    accountFormList.Add(JsonConvert.DeserializeObject<AccountFormModel>(((JProperty)item).Value.ToString()));
+                }
+            }
+
+            foreach (var i in accountFormList)
+            {
+                if (i.Email == email.EmailAddr)
+                {
+                    emailExists = true;
+                    break;
+                }
+            }
+
+            // If email does not exist
+            if (emailExists == false)
+            {
+                TempData["IsEmailExist"] = "This email does not exist. Please try another email.";
+                return View(email);
+            }
+
             //retrieve from singpass user in firebase
             FirebaseResponse response2 = client.Get("SingpassUser");
+            
             dynamic data2 = JsonConvert.DeserializeObject<dynamic>(response2.Body);
             var SingpassHolderList = new List<SingpassModel>();
 
@@ -469,14 +501,13 @@ namespace PFD_OCBC_Group5.Controllers
             }
             else
             {
-                TempData["ValidationEmail"] = "Email Exist for Singpass";
+                TempData["IsEmailExist"] = "Email Exist for Singpass";
                 return View();
             }
         }
 
         public ActionResult VerifyCode()
         {
-
             return View();
         }
 
@@ -508,7 +539,7 @@ namespace PFD_OCBC_Group5.Controllers
                         }
                     }
                 }
-                return RedirectToAction("PersonInfo", "NonSP");
+                return RedirectToAction("SubmitAccountInfo", "NonSP");
             }
             else
             {
@@ -528,6 +559,8 @@ namespace PFD_OCBC_Group5.Controllers
 
         private void SendEmail(string email)
         {
+            bool emailExists = true;
+
             client = new FireSharp.FirebaseClient(config);
             FirebaseResponse response = client.Get("AccountHolder");
             dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
@@ -580,7 +613,6 @@ namespace PFD_OCBC_Group5.Controllers
                         TempData["VerificationCode"] = verificationCode;
                         break;
                     }
-
                 }
             }
         }
