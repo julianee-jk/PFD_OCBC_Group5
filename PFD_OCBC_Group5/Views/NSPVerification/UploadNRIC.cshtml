@@ -20,14 +20,8 @@
 
         <input hidden asp-for="NRIC" readonly class="form-control" />
         <img id="output" src="/images/profile_icon.png" width="150" height="150" style="margin-top: 1em"><br />
-        <input name="photo" type="file" accept="image/*" onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])">
+        <input name="photo" type="file" accept="image/*" onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])" required>
 
-        <div id="verification-id-box">
-            <h2 style="margin-top: 1em;">Verification Code</h2>
-            <input asp-for="VerificationCode" value="@TempData["generatedCode"]" readonly class="form-control" />
-        </div>
-
-        <input hidden asp-for="VerificationDate" readonly class="form-control" />
 
         <input type="submit" class="btn btn-outline-primary"/>
     </form>
