@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Routing;
 using PFD_OCBC_Group5.Models;
 using PFD_OCBC_Group5.DAL;
 using System.Diagnostics;
+using System.Net.Mail;
 using PFD_OCBC_Group5.Extensions;
 using FireSharp.Config;
 using FireSharp.Interfaces;
@@ -19,6 +20,7 @@ namespace PFD_OCBC_Group5.Controllers
 {
     public class NonSPController : Controller
     {
+        private static Random random = new Random();
 
         IFirebaseConfig config = new FirebaseConfig
         {
@@ -43,6 +45,11 @@ namespace PFD_OCBC_Group5.Controllers
         {
             // Set the session type of the user SP / NonSP
             HttpContext.Session.SetString("Type", "NonSP");
+            int accID = 0;
+            if (TempData["accId"] != null)
+            {
+                accID = (int)TempData["accId"];
+            }
 
             if (currentUser == 2)
             {
@@ -54,11 +61,62 @@ namespace PFD_OCBC_Group5.Controllers
 
                 // Save the owner's relationship with the second applicant
                 HttpContext.Session.SetString("RelationshipWithOwner", rel);
-            }
 
-            AccountFormModel account = new AccountFormModel();
-            account.DOB = DateTime.Now;
-            return View(account);
+                AccountFormModel account = new AccountFormModel();
+                account.DOB = DateTime.Now;
+                return View(account);
+            }
+            else if (HttpContext.Session.GetString("Status") == "Continue")
+            {
+                client = new FireSharp.FirebaseClient(config);
+                FirebaseResponse response = client.Get("AccountHolder");
+                dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
+
+                var list = new List<AccountFormModel>();
+
+                if (data != null)
+                {
+                    foreach (var item in data)
+                    {
+                        list.Add(JsonConvert.DeserializeObject<AccountFormModel>(((JProperty)item).Value.ToString()));
+                    }
+                }
+                AccountFormModel tempAcc = new AccountFormModel();
+                foreach (var x in list)
+                {
+                    if (x.AccountID == accID)
+                    {
+                        tempAcc.AccountID = x.AccountID;
+                        tempAcc.AccountCreated = x.AccountCreated;
+                        tempAcc.DOB = x.DOB;
+                        tempAcc.Email = x.Email;
+                        tempAcc.Gender = x.Gender;
+                        tempAcc.HomeAddress = x.HomeAddress;
+                        tempAcc.HomeNumber = x.HomeNumber;
+                        tempAcc.MailingAddress = x.MailingAddress;
+                        tempAcc.MailingPostalCode = x.MailingPostalCode;
+                        tempAcc.MobileNumber = x.MobileNumber;
+                        tempAcc.Name = x.Name;
+                        tempAcc.Nationality = x.Nationality;
+                        tempAcc.NatureOfBusiness = x.NatureOfBusiness;
+                        tempAcc.NRIC = x.NRIC;
+                        tempAcc.Occupation = x.Occupation;
+                        tempAcc.PostalCode = x.PostalCode;
+                        tempAcc.PR = x.PR;
+                        tempAcc.Salutation = x.Salutation;
+                        tempAcc.SelfEmployed = x.SelfEmployed;
+                        tempAcc.UniqueID = x.UniqueID;
+                        break;
+                    }
+                }
+                return View(tempAcc);
+            }
+            else
+            {
+                AccountFormModel account = new AccountFormModel();
+                account.DOB = DateTime.Now;
+                return View(account);
+            }
         }
 
         [HttpPost]
@@ -252,6 +310,130 @@ namespace PFD_OCBC_Group5.Controllers
                 Debug.WriteLine("NRIC exists in singpass");
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult SendContinueEmail()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SendContinueEmail(SecondEmail email)
+        {
+            SendEmail(email.EmailAddr);
+
+            return RedirectToAction("VerifyCode", "NonSP");
+        }
+
+        public ActionResult VerifyCode()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult VerifyCode(VerificationEmail vEmail)
+        {
+            if (vEmail.VerificationCode == vEmail.InputCode)
+            {
+                client = new FireSharp.FirebaseClient(config);
+                FirebaseResponse response = client.Get("AccountHolder");
+                dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
+
+                var list = new List<AccountFormModel>();
+
+                if (data != null)
+                {
+                    foreach (var item in data)
+                    {
+                        list.Add(JsonConvert.DeserializeObject<AccountFormModel>(((JProperty)item).Value.ToString()));
+                    }
+                }
+                foreach (var x in list)
+                {
+                    if (x.Email == vEmail.EmailAddr)
+                    {
+                        if (x.AccountCreated == "N")
+                        {
+                            TempData["accId"] = x.AccountID;
+                        }
+                    }
+                }
+                return RedirectToAction("PersonInfo", "NonSP");
+            }
+            else
+            {
+                TempData["CodeErrorMessage"] = "Wrong Verification Code";
+                TempData["VerificationCode"] = vEmail.VerificationCode;
+                TempData["EmailAddr"] = vEmail.EmailAddr;
+                return RedirectToAction("VerifyCode", "NonSP");
+            }
+        }
+
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        private void SendEmail(string email)
+        {
+            client = new FireSharp.FirebaseClient(config);
+            FirebaseResponse response = client.Get("AccountHolder");
+            dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
+            var AccHolderList = new List<AccountFormModel>();
+
+            if (data != null)
+            {
+                foreach (var item in data)
+                {
+                    AccHolderList.Add(JsonConvert.DeserializeObject<AccountFormModel>(((JProperty)item).Value.ToString()));
+                }
+            }
+            else
+            {
+                TempData["EmailErrorMessage"] = "Invalid Email!";
+            }
+            foreach (var x in AccHolderList)
+            {
+                if (x.Email == email)
+                {
+                    if (x.AccountCreated == "N")
+                    {
+                        string verificationCode = RandomString(5);
+
+                        string messageBody = @"Dear user," + "\n" +
+                                                          "A request has been made to retrieve your information to continue a Joint-Account Application." + "\n"
+                                                        + "Please click on the link below to continue the process." + "\n\n"
+                                                        + "OCBC Joint-Account Verification Code: " + verificationCode;
+
+                        MailAddress from = new MailAddress("ocbcpfdgroup5noreply@gmail.com");
+                        MailAddress to = new MailAddress(email);
+                        MailMessage message = new MailMessage(from, to);
+                        message.Subject = "OCBC Joint-Account Creation - Retrieval of Data";
+                        message.Body = messageBody;
+                        SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+                        client.Credentials = new System.Net.NetworkCredential("ocbcpfdgroup5noreply@gmail.com", "pfdgrp5123.");
+                        client.EnableSsl = true;
+
+                        try
+                        {
+                            client.Send(message);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Exception caught in sending email(): {0}",
+                                ex.ToString());
+                        }
+
+                        TempData["EmailAddr"] = email;
+                        TempData["VerificationCode"] = verificationCode;
+                        break;
+                    }
+
+                }
+            }
         }
     }
 }

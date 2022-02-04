@@ -1,0 +1,39 @@
+﻿@model PFD_OCBC_Group5.Models.VerificationEmail
+@{
+    ViewData["Title"] = "Validate";
+}
+
+
+<h3 style="margin-top: 3em">Enter the verification sent to your email address</h3>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="VerifyCode">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EmailAddr" class="control-label" hidden></label>
+                <input name="EmailAddr" asp-for="EmailAddr" class="form-control" value="@TempData["EmailAddr"]" hidden/>
+                <span asp-validation-for="EmailAddr" class="text-danger" hidden></span>
+                <div class="text-center">
+                    <span class="text-danger">@TempData["CodeErrorMessage"]</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-group">
+                    <label asp-for="VerificationCode" class="control-label" hidden></label>
+                    <input asp-for="VerificationCode" class="form-control" onpaste="return false;" ondrop="return false;" value="@TempData["VerificationCode"]" hidden/>
+                    <span asp-validation-for="VerificationCode" class="text-danger" hidden></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="InputCode" class="control-label"></label>
+                    <input asp-for="InputCode" class="form-control" onpaste="return false;" ondrop="return false;"/>
+                    <span asp-validation-for="InputCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
