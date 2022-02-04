@@ -15,7 +15,7 @@
             <div class="form-group">
                 <label asp-for="NRIC" class="control-label"></label>
                 <input asp-for="NRIC" class="form-control" required />
-                <span asp-validation-for="NRIC" class="text-danger"></span>
+                <span asp-validation-for="NRIC" class="text-danger">@TempData["InvalidNRIC"]</span>
             </div>
 
             <div class="form-group">
