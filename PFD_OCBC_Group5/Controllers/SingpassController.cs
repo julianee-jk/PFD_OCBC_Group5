@@ -15,6 +15,7 @@ using FireSharp.Interfaces;
 using FireSharp.Response;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PFD_OCBC_Group5.Controllers
 {
@@ -159,6 +160,7 @@ namespace PFD_OCBC_Group5.Controllers
 
         public ActionResult SingpassRegister()
         {
+            ViewData["GenderSelection"] = GetGenderSelection();
             return View();
         }
 
@@ -166,10 +168,10 @@ namespace PFD_OCBC_Group5.Controllers
         [HttpPost]
         public ActionResult SingpassRegister(ValidateConfirmPassword account)
         {
-
+            ViewData["GenderSelection"] = GetGenderSelection();
             if (account.cfmPassword == account.accountInformation.Password)
             {
-
+                            ViewData["GenderSelection"] = GetGenderSelection();
                 client = new FireSharp.FirebaseClient(config);
                 FirebaseResponse response = client.Get("SingpassUser");
                 dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
@@ -305,7 +307,27 @@ namespace PFD_OCBC_Group5.Controllers
 
         }
 
-
+        // Get all salutations list
+        private List<SelectListItem> GetGenderSelection()
+        {
+            List<SelectListItem> genders = new List<SelectListItem>();
+            genders.Add(new SelectListItem
+            {
+                Value = "Other",
+                Text = "Other"
+            });
+            genders.Add(new SelectListItem
+            {
+                Value = "Male",
+                Text = "Male"
+            });
+            genders.Add(new SelectListItem
+            {
+                Value = "Female",
+                Text = "Female"
+            });
+            return genders;
+        }
 
 
 
