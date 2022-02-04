@@ -42,9 +42,10 @@ namespace PFD_OCBC_Group5.Controllers
             return View();
         }
 
+        [HttpGet]
         public async Task<ActionResult> SingpassLogin(int currentUser, int accId, string rel)
         {
-            if (currentUser == 2) 
+            if (currentUser == 2)
             {
                 // Set the session state to the second user
                 HttpContext.Session.SetString("Applicant", "Second");
@@ -80,7 +81,7 @@ namespace PFD_OCBC_Group5.Controllers
             var singpassAccounts = await firebaseClient
               .Child("SingpassUser")
               .OnceAsync<SingpassModel>();
-           
+
             foreach (var y in singpassAccounts)
             {
                 var singpass = y.Object;
@@ -110,7 +111,7 @@ namespace PFD_OCBC_Group5.Controllers
 
                 temp.AccountID = account.AccountID;
 
-                temp.NRIC = account.NRIC == "False" ?  "" : account.NRIC;
+                temp.NRIC = account.NRIC == "False" ? "" : account.NRIC;
 
                 temp.Name = account.Name == "False" ? "" : account.Name;
 
@@ -154,103 +155,163 @@ namespace PFD_OCBC_Group5.Controllers
             TempData.Put("singpassUserList", singpassUserlist);
 
             HttpContext.Session.SetString("Type", "Singpass");
+
             return View();
         }
 
-        public ActionResult SingpassRegister()
-        {
-            return View();
-        }
-
-
         [HttpPost]
-        public ActionResult SingpassRegister(ValidateConfirmPassword account)
+        public async Task<ActionResult> SingpassLogin(string nric, string password)
         {
+            List<AccountFormModel> accountHolderList = new List<AccountFormModel>();
+            List<SingpassModel> singpassUserList = new List<SingpassModel>();
 
-            if (account.cfmPassword == account.accountInformation.Password)
+            var firebaseClient = new FirebaseClient("https://pfd-group-5-default-rtdb.firebaseio.com/");
+
+            var singpassAccounts = await firebaseClient
+              .Child("SingpassUser")
+              .OnceAsync<SingpassModel>();
+
+            foreach (var y in singpassAccounts)
             {
+                var singpass = y.Object;
+                SingpassModel tempSingpass = new SingpassModel();
+                tempSingpass.DOB = singpass.DOB;
+                tempSingpass.Email = singpass.Email;
+                tempSingpass.Gender = singpass.Gender;
+                tempSingpass.HomeAddress = singpass.HomeAddress;
+                tempSingpass.MobileNumber = singpass.MobileNumber;
+                tempSingpass.NRIC = singpass.NRIC;
+                tempSingpass.Name = singpass.Name;
+                tempSingpass.Nationality = singpass.Nationality;
+                tempSingpass.Password = singpass.Password;
+                tempSingpass.PostalCode = singpass.PostalCode;
 
-                client = new FireSharp.FirebaseClient(config);
-                FirebaseResponse response = client.Get("SingpassUser");
-                dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
-                var singpassAccountList = new List<AccountFormModel>();
-                if (data != null)
-                {
-                    foreach (var item in data)
-                    {
-                        singpassAccountList.Add(JsonConvert.DeserializeObject<AccountFormModel>(((JProperty)item).Value.ToString()));
-                    }
-                }
-
-                var exists = false;
-                foreach(var dbAccount in singpassAccountList)
-                {
-                    if(dbAccount.NRIC == account.accountInformation.NRIC)
-                    {
-                        exists = true;
-                        break;
-                    }
-                }
-
-                if(!exists)
-                {
-                    //insert into firebase
-                    Debug.WriteLine("Inserted into firebase");
-
-
-                    AddSingpassUser(account.accountInformation);
-
-
-                }
-                else
-                {
-                    Debug.WriteLine("Singpass account already exist");
-
-
-
-                }
-                
-
-
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                //passwords were not the same
-                return View(account);
+                singpassUserList.Add(tempSingpass);
             }
 
-            
-        }
+            var accountHolders = await firebaseClient
+              .Child("AccountHolder")
+              .OnceAsync<AccountFormModel>();
 
+            foreach (var x in accountHolders)
+            {
+                var account = x.Object;
+                AccountFormModel temp = new AccountFormModel();
 
-        [HttpPost]
-        public ActionResult SingpassLogin(string nric, string password)
-        {
+                temp.AccountID = account.AccountID;
 
-            List<AccountFormModel> accountHolderList = TempData.Get<List<AccountFormModel>>("accountHolderList");
-            List<SingpassModel> singpassUserList = TempData.Get<List<SingpassModel>>("singpassUserlist");
+                temp.NRIC = account.NRIC == "False" ? "" : account.NRIC;
+
+                temp.Name = account.Name == "False" ? "" : account.Name;
+
+                temp.Salutation = account.Salutation == "False" ? "" : account.Salutation;
+
+                temp.Nationality = account.Nationality == "False" ? "" : account.Nationality;
+
+                string g = account.DOB.ToString();
+                temp.DOB = g == "False" ? DateTime.Parse("") : account.DOB;
+
+                temp.Occupation = account.Occupation == "False" ? "" : account.Occupation;
+
+                temp.PR = account.PR == "False" ? "" : account.PR;
+
+                temp.Gender = account.Gender == "False" ? "" : account.Gender;
+
+                temp.SelfEmployed = account.SelfEmployed == "False" ? "" : account.SelfEmployed;
+
+                temp.NatureOfBusiness = account.NatureOfBusiness == "False" ? "" : account.NatureOfBusiness;
+
+                temp.HomeAddress = account.HomeAddress == "False" ? "" : account.HomeAddress;
+
+                temp.PostalCode = account.PostalCode == "False" ? "" : account.PostalCode;
+
+                temp.MailingAddress = account.MailingAddress == "False" ? "" : account.MailingAddress;
+
+                temp.MailingPostalCode = account.MailingPostalCode == "False" ? "" : account.MailingPostalCode;
+
+                temp.Email = account.Email == "False" ? "" : account.Email;
+
+                temp.MobileNumber = account.MobileNumber == "False" ? "" : account.MobileNumber;
+
+                temp.HomeNumber = account.HomeNumber == "False" ? "" : account.HomeNumber;
+
+                temp.AccountCreated = account.AccountCreated == "False" ? "" : account.AccountCreated;
+
+                accountHolderList.Add(temp);
+            }
 
             SingpassModel singpassInfo = new SingpassModel();
 
             var userExists = false;
             var passwordCorrect = false;
+            AccountFormModel accFormVerify = new AccountFormModel();
 
-            foreach(var singpassUser in singpassUserList)
+            // Only run this code if it is during the second applicant's applicant process
+            if (HttpContext.Session.GetString("Applicant") == "Second")
             {
-                if(singpassUser.NRIC == nric)
+                foreach (var accountForm in accountHolderList)
                 {
-                    //checking if user exists
-                    userExists = true;
-                    
-                    Debug.WriteLine(singpassUser.Password);
-                    if (singpassUser.Password == password)
+                    // Find the first applicant's NRIC
+                    if (accountForm.AccountID == HttpContext.Session.GetInt32("FirstUserAccID"))
                     {
-                        singpassInfo = singpassUser;
-                        //checking if password is correct
-                        passwordCorrect = true;
+                        // Set the selected accountForm object to the accFormVerify variable
+                        accFormVerify = accountForm;
+                        break;
                     }
-                    break;
+                }
+            }
+            
+            foreach (var singpassUser in singpassUserList)
+            {
+                // If user is second applicant, verify the login information
+                if (HttpContext.Session.GetString("Applicant") == "Second")
+                {
+                    if (accFormVerify.NRIC == nric)
+                    {
+                        // Create a temporary Singpass Model Object to return to the view
+                        SingpassModel tempSPValidation = new SingpassModel();
+                        tempSPValidation.NRIC = nric;
+                        tempSPValidation.Password = password;
+
+                        // send error message not the same confirm
+                        TempData["InvalidNRIC"] = "The NRIC entered cannot be the same as the NRIC of the first applicant.";
+
+                        return View(tempSPValidation);
+                    }
+                    else
+                    {
+                        if (singpassUser.NRIC == nric)
+                        {
+                            //checking if user exists
+                            userExists = true;
+
+                            if (singpassUser.Password == password)
+                            {
+                                singpassInfo = singpassUser;
+
+                                //checking if password is correct
+                                passwordCorrect = true;
+                            }
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    if (singpassUser.NRIC == nric)
+                    {
+                        //checking if user exists
+                        userExists = true;
+
+                        if (singpassUser.Password == password)
+                        {
+                            singpassInfo = singpassUser;
+
+                            //checking if password is correct
+                            passwordCorrect = true;
+                        }
+                        break;
+                    }
                 }
             }
 
@@ -258,14 +319,15 @@ namespace PFD_OCBC_Group5.Controllers
             if (passwordCorrect)
             {
                 AccountFormModel account = new AccountFormModel();
-                
+
                 foreach (var accounts in accountHolderList)
                 {
                     if (accounts.NRIC == nric)
                     {
-                        if(accounts.AccountCreated == "N")
+                        if (accounts.AccountCreated == "N")
                         {
                             account = accounts;
+                            
                             //checking if the nric has an existing form that was saved.
                             existingForm = true;
                             break;
@@ -273,7 +335,7 @@ namespace PFD_OCBC_Group5.Controllers
                     }
                 }
 
-                if(existingForm)
+                if (existingForm)
                 {
                     TempData.Put("firstUserAcc", account);
 
@@ -301,13 +363,61 @@ namespace PFD_OCBC_Group5.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            
-
         }
 
+        public ActionResult SingpassRegister()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public ActionResult SingpassRegister(ValidateConfirmPassword account)
+        {
 
+            if (account.cfmPassword == account.accountInformation.Password)
+            {
+                client = new FireSharp.FirebaseClient(config);
+                FirebaseResponse response = client.Get("SingpassUser");
+                
+                dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
+                var singpassAccountList = new List<AccountFormModel>();
+                
+                if (data != null)
+                {
+                    foreach (var item in data)
+                    {
+                        singpassAccountList.Add(JsonConvert.DeserializeObject<AccountFormModel>(((JProperty)item).Value.ToString()));
+                    }
+                }
 
+                var exists = false;
+                foreach (var dbAccount in singpassAccountList)
+                {
+                    if (dbAccount.NRIC == account.accountInformation.NRIC)
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
 
+                if (!exists)
+                {
+                    //insert into firebase
+                    Debug.WriteLine("Inserted into firebase");
+
+                    AddSingpassUser(account.accountInformation);
+                }
+                else
+                {
+                    Debug.WriteLine("Singpass account already exist");
+                }
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                //passwords were not the same
+                return View(account);
+            }
+        }
     }
 }
