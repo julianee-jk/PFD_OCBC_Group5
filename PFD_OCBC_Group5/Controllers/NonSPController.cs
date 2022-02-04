@@ -433,9 +433,45 @@ namespace PFD_OCBC_Group5.Controllers
         [HttpPost]
         public ActionResult SendContinueEmail(SecondEmail email)
         {
-            SendEmail(email.EmailAddr);
+            client = new FireSharp.FirebaseClient(config);
+            //retrieve from singpass user in firebase
+            FirebaseResponse response2 = client.Get("SingpassUser");
+            dynamic data2 = JsonConvert.DeserializeObject<dynamic>(response2.Body);
+            var SingpassHolderList = new List<SingpassModel>();
 
-            return RedirectToAction("VerifyCode", "NonSP");
+            var accExistInSP = false;
+
+            if (data2 != null)
+            {
+                foreach (var item in data2)
+                {
+                    SingpassHolderList.Add(JsonConvert.DeserializeObject<SingpassModel>(((JProperty)item).Value.ToString()));
+                }
+            }
+
+            foreach (var x in SingpassHolderList)
+            {
+                if (x.Email == email.EmailAddr)
+                {
+                    accExistInSP = true;
+                    break;
+                }
+                else
+                {
+                    accExistInSP = false;
+                }
+            }
+
+            if(!accExistInSP)
+            {
+                SendEmail(email.EmailAddr);
+                return RedirectToAction("VerifyCode", "NonSP");
+            }
+            else
+            {
+                TempData["ValidationEmail"] = "Email Exist for Singpass";
+                return View();
+            }
         }
 
         public ActionResult VerifyCode()
