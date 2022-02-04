@@ -1,17 +1,16 @@
 ﻿@model PFD_OCBC_Group5.Models.SingpassModel
 
 @{
-    ViewData["Title"] = "SingpassLogin";
+    ViewData["Title"] = "Singpass Login";
 }
 
-<h1>Singpass Login</h1>
+<h2 class="font-weight-bold text-center" style="margin:2em 2em 0 2em">Singpass Login</h2>
+<hr />
+<div class="row justify-content-md-center" style="margin-top: 1em">
+    <div class="col-md-4">
+        <form asp-controller="Singpass" asp-action="SingpassLogin">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<div>
-    <hr />
-    <form asp-controller="Singpass" asp-action="SingpassLogin">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-        <div class="segmented-row">
             <div class="form-group">
                 <label asp-for="NRIC" class="control-label"></label>
                 <input asp-for="NRIC" class="form-control" required />
@@ -23,10 +22,11 @@
                 <input asp-for="Password" class="form-control" required />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-        </div>
 
-        <div class="buttons">
-            <button type="submit" class="buttonstyle" asp-action="SingpassLogin">Login</button>
-        </div>
-    </form>
+            <div class="form-group text-center" style="margin-top: 2rem">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Go Back</a>&nbsp;
+                <input type="submit" value="Login" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
 </div>

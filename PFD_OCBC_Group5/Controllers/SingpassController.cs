@@ -15,6 +15,7 @@ using FireSharp.Interfaces;
 using FireSharp.Response;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PFD_OCBC_Group5.Controllers
 {
@@ -39,6 +40,7 @@ namespace PFD_OCBC_Group5.Controllers
 
         public IActionResult Index()
         {
+            ViewData["GenderSelection"] = GetGenderSelection();
             return View();
         }
 
@@ -162,6 +164,7 @@ namespace PFD_OCBC_Group5.Controllers
         [HttpPost]
         public async Task<ActionResult> SingpassLogin(string nric, string password)
         {
+            ViewData["GenderSelection"] = GetGenderSelection();
             List<AccountFormModel> accountHolderList = new List<AccountFormModel>();
             List<SingpassModel> singpassUserList = new List<SingpassModel>();
 
@@ -418,6 +421,28 @@ namespace PFD_OCBC_Group5.Controllers
                 //passwords were not the same
                 return View(account);
             }
+        }
+
+        // Get all salutations list
+        private List<SelectListItem> GetGenderSelection()
+        {
+            List<SelectListItem> genders = new List<SelectListItem>();
+            genders.Add(new SelectListItem
+            {
+                Value = "Other",
+                Text = "Other"
+            });
+            genders.Add(new SelectListItem
+            {
+                Value = "Male",
+                Text = "Male"
+            });
+            genders.Add(new SelectListItem
+            {
+                Value = "Female",
+                Text = "Female"
+            });
+            return genders;
         }
     }
 }
