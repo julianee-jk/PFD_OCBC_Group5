@@ -38,7 +38,7 @@ namespace PFD_OCBC_Group5.Controllers
                     string secondPersonLink = "https://localhost:44382/Singpass/SingpassLogin?currentUser=2&accId=" + accId + "&rel=" + secondEmail.RelationShipToApplicant;
 
                     if (HttpContext.Session.GetString("Type") == "NonSP")
-                        secondPersonLink = "https://localhost:44382/NonSP/PersonInfo?currentUser=2&accId=" + accId + "&rel=" + secondEmail.RelationShipToApplicant;
+                        secondPersonLink = "https://localhost:44382/NonSP/SubmitAccountInfo?currentUser=2&accId=" + accId + "&rel=" + secondEmail.RelationShipToApplicant;
 
                     Debug.WriteLine(HttpContext.Session.GetString("Type"));
                     Debug.WriteLine(secondPersonLink);
@@ -58,7 +58,7 @@ namespace PFD_OCBC_Group5.Controllers
                 }
                 else
                 {
-                    // Send error message not the same confirm
+                    // Send error message not the same confirmation email
                     ViewBag.MismatchNum = "The confirmation email does not matched the previously entered email. Please check and enter again.";
                     return View(secondEmail);
                 }
