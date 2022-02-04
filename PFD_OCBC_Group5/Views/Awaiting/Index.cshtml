@@ -14,13 +14,22 @@
 
     @if (Context.Session.GetString("Type") == "Singpass")
     {
-        <h2>Waiting for Second Applicant to Finish</h2>
+        <h2>Application complete, you may proceed to close this tab. The results of your application will be sent to you via the email you have stated in the form previously.</h2>
+
+        <br />
+
+        <h1><b>Thank you for applying with OCBC! Have a nice day!</b></h1>
     }
     else
     {
-        <h2>Thank you for completing the form! Please wait for the second joint account holder to
-            complete his/her application. Once complete, it will take a few days for us to verify your application!
-            An email will be sent to you once the application process is verified. Thank you for your understanding!</h2>
+        <h2>
+            Thank you for completing the form! Please wait for the second joint account holder to
+            complete his/her application. Upon successful completion, the results of your application will be sent to you via the email you have stated in the form previously.
+        </h2>
+
+        <br />
+
+        <h3><b>Thank you for applying with OCBC! Have a nice day!</b></h3>
     }
 </div>
 
