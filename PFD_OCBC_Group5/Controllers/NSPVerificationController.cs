@@ -13,6 +13,7 @@ using OfficeOpenXml;
 using System.Data;
 using System.Linq;
 using ExcelDataReader;
+using System.Threading;
 
 namespace PFD_OCBC_Group5.Controllers
 {
@@ -149,8 +150,11 @@ namespace PFD_OCBC_Group5.Controllers
             var textVerification = "";
             Double facialVerification = 0.0;
 
+            Thread.Sleep(30000);
+
             using (var stream = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read))
             {
+                
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
 
@@ -160,17 +164,16 @@ namespace PFD_OCBC_Group5.Controllers
                         
                         if (count == 1)
                         {
-
-                            
-                            Console.WriteLine(reader.GetValue(0).ToString());
-
                             textVerification = reader.GetValue(1).ToString();
                             facialVerification = Convert.ToDouble(reader.GetValue(2).ToString());
+                            
                         }
 
                         count += 1;
                     }
                 }
+
+                
             }
 
             if(textVerification == "True" && facialVerification > 0.5)
@@ -183,11 +186,9 @@ namespace PFD_OCBC_Group5.Controllers
                 {
                     return RedirectToAction("Validate", "SecondEmail");
                 }
-
             }
             else
             {
-
                 TempData["VerificationErrorMsg"] = "Verification Failed please upload again";
                 return RedirectToAction("UploadPhoto", "NSPVerification");
             }
