@@ -35,8 +35,9 @@ namespace PFD_OCBC_Group5.Controllers
 
         public ActionResult Continue()
         {
+            HttpContext.Session.SetString("Type", "NonSP");
             HttpContext.Session.SetString("Status", "Continue");
-            return RedirectToAction("Validate", "SecondMobile");
+            return RedirectToAction("SendContinueEmail", "NonSP");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

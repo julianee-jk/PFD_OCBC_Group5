@@ -37,6 +37,7 @@ namespace PFD_OCBC_Group5.Controllers
         public async Task<IActionResult> UploadPhoto(NSPVerification verification, IFormFile photo)
         {
 
+
             verification.NRIC = HttpContext.Session.GetString("FirstNRIC");
             verification.VerificationDate = DateTime.Now;
 
@@ -83,8 +84,14 @@ namespace PFD_OCBC_Group5.Controllers
                 }
             }
 
-
-            return RedirectToAction("Validate", "SecondEmail");
+            if (HttpContext.Session.GetString("Applicant") == "Second")
+            {
+                return RedirectToAction("Index", "JointAccount");
+            }
+            else
+            {
+                return RedirectToAction("Validate", "SecondEmail");
+            }
         }
 
         public ActionResult CreateExcel(string code)
