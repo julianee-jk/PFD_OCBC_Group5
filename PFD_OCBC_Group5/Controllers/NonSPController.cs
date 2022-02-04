@@ -39,7 +39,7 @@ namespace PFD_OCBC_Group5.Controllers
         }
 
         // GET: NonSPControllercs
-        public ActionResult PersonInfo(int currentUser, int accId, string rel)
+        public ActionResult SubmitAccountInfo(int currentUser, int accId, string rel)
         {
             // Set the session type of the user SP / NonSP
             HttpContext.Session.SetString("Type", "NonSP");
@@ -61,8 +61,12 @@ namespace PFD_OCBC_Group5.Controllers
             return View(account);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SubmitAccountInfo(AccountFormModel account)
         {
+            TempData["InvalidNRIC"] = "";
+
             bool flag = false;
 
             if (account.Occupation == null || account.PR == null || account.Gender == null || account.SelfEmployed == null || account.HomeAddress == null || account.PostalCode == null || account.Email == null || account.MobileNumber == null)
@@ -85,6 +89,31 @@ namespace PFD_OCBC_Group5.Controllers
                 }
             }
 
+            AccountFormModel accFormVerify = new AccountFormModel();
+
+            // only run this code if it is during the second applicant's applicant process
+            if (HttpContext.Session.GetString("Applicant") == "Second")
+            {
+                foreach (var accountForm in list)
+                {
+                    // find the first applicant's nric
+                    if (accountForm.AccountID == HttpContext.Session.GetInt32("FirstUserAccID"))
+                    {
+                        // set the selected accountform object to the accformverify variable
+                        accFormVerify = accountForm;
+                        break;
+                    }
+                }
+
+                // verify that the second applicant's nric is not the same as the first applicant's. else display error message.
+                if (accFormVerify.NRIC == account.NRIC)
+                {
+                    // send error message not the same confirm
+                    TempData["InvalidNRIC"] = "The NRIC entered cannot be the same as the NRIC of the first applicant.";
+                    return View(account);
+                }
+            }
+            
             foreach (var x in list)
             {
                 if (x.NRIC == account.NRIC)
