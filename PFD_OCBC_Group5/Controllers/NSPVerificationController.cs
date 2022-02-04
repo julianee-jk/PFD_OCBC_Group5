@@ -53,9 +53,13 @@ namespace PFD_OCBC_Group5.Controllers
             {
                 try
                 {
-                  
+
                     // Rename the uploaded file with the user's NRIC.
-                    string uploadedFile = "NSPVerification.png";
+                    string fileExt = Path.GetExtension(
+
+                    photo.FileName);
+                    // Rename the uploaded file with the user's NRIC.
+                    string uploadedFile = "NSPVerification" + fileExt;
 
                     // Get the complete path to the images folder in server
                     string savePath = Path.Combine(
@@ -107,7 +111,6 @@ namespace PFD_OCBC_Group5.Controllers
             {
                 try
                 {
-
                     // Rename the uploaded file with the user's NRIC.
                     string fileExt = Path.GetExtension(
 
@@ -143,6 +146,9 @@ namespace PFD_OCBC_Group5.Controllers
 
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
+            var textVerification = "";
+            Double facialVerification = 0.0;
+
             using (var stream = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read))
             {
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
@@ -154,9 +160,12 @@ namespace PFD_OCBC_Group5.Controllers
                         
                         if (count == 1)
                         {
+
+                            
                             Console.WriteLine(reader.GetValue(0).ToString());
-                            Console.WriteLine(reader.GetValue(1).ToString());
-                            Console.WriteLine(reader.GetValue(2).ToString());
+
+                            textVerification = reader.GetValue(1).ToString();
+                            facialVerification = Convert.ToDouble(reader.GetValue(2).ToString());
                         }
 
                         count += 1;
@@ -164,16 +173,28 @@ namespace PFD_OCBC_Group5.Controllers
                 }
             }
 
-
-
-            if (HttpContext.Session.GetString("Applicant") == "Second")
+            if(textVerification == "True" && facialVerification > 0.5)
             {
-                return RedirectToAction("Index", "JointAccount");
+                if (HttpContext.Session.GetString("Applicant") == "Second")
+                {
+                    return RedirectToAction("Index", "JointAccount");
+                }
+                else
+                {
+                    return RedirectToAction("Validate", "SecondEmail");
+                }
+
             }
             else
             {
-                return RedirectToAction("Validate", "SecondEmail");
+
+                TempData["VerificationErrorMsg"] = "Verification Failed please upload again";
+                return RedirectToAction("UploadPhoto", "NSPVerification");
             }
+
+
+
+            
             
         }
 
@@ -215,9 +236,9 @@ namespace PFD_OCBC_Group5.Controllers
                 worksheet.Cells["A1:K20"].AutoFitColumns();
 
                 //2 is rowNumber 1 is column number
-                worksheet.Cells[2, 1].Value = code;
-                worksheet.Cells["B2"].Value = "none";
-                worksheet.Cells["C2"].Value = "none";
+                worksheet.Cells["A2"].Value = "JA453W";
+                worksheet.Cells["B2"].Value = "True";
+                worksheet.Cells["C2"].Value = "123";
 
                 //Save Excel file
                 excel.SaveAs(excelFile);
