@@ -10,6 +10,9 @@ using System.IO;
 using System.Diagnostics;
 using System.Drawing;
 using OfficeOpenXml;
+using System.Data;
+using System.Linq;
+using ExcelDataReader;
 
 namespace PFD_OCBC_Group5.Controllers
 {
@@ -50,12 +53,9 @@ namespace PFD_OCBC_Group5.Controllers
             {
                 try
                 {
-                    // Find the filename extension of the file to be uploaded.
-                    string fileExt = Path.GetExtension(
-
-                    photo.FileName);
+                  
                     // Rename the uploaded file with the user's NRIC.
-                    string uploadedFile = "NSPVerification_" + verification.NRIC + fileExt;
+                    string uploadedFile = "NSPVerification.png";
 
                     // Get the complete path to the images folder in server
                     string savePath = Path.Combine(
@@ -90,9 +90,93 @@ namespace PFD_OCBC_Group5.Controllers
             }
             else
             {
-                return RedirectToAction("Validate", "SecondEmail");
+                return RedirectToAction("UploadNRIC", "NSPVerification");
             }
         }
+        public ActionResult UploadNRIC()
+        {
+            
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadNRIC(IFormFile photo)
+        {
+            if (photo != null &&
+            photo.Length > 0)
+            {
+                try
+                {
+
+                    // Rename the uploaded file with the user's NRIC.
+                    string fileExt = Path.GetExtension(
+
+                    photo.FileName);
+                    // Rename the uploaded file with the user's NRIC.
+                    string uploadedFile = "NSPVerificationNRIC" + fileExt;
+
+                    // Get the complete path to the images folder in server
+                    string savePath = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot/images/nsp_files", uploadedFile);
+                    // Upload the file to server
+                    using (var fileSteam = new FileStream(
+                    savePath, FileMode.Create))
+                    {
+                        await photo.CopyToAsync(fileSteam);
+                    }
+        
+                }
+                catch (IOException)
+                {
+                    //File IO error, could be due to access rights denied
+                    ViewData["VerificationMessage"] = "File uploading fail!";
+                }
+                catch (Exception ex) //Other type of error
+                {
+                    ViewData["VerificationMessage"] = ex.Message;
+                }
+            }
+
+
+            var fileName = "Verification Code Generated.xlsx";
+
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+            using (var stream = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+
+                    var count = 0;
+                    while (reader.Read()) //Each row of the file
+                    {
+                        
+                        if (count == 1)
+                        {
+                            Console.WriteLine(reader.GetValue(0).ToString());
+                            Console.WriteLine(reader.GetValue(1).ToString());
+                            Console.WriteLine(reader.GetValue(2).ToString());
+                        }
+
+                        count += 1;
+                    }
+                }
+            }
+
+
+
+            if (HttpContext.Session.GetString("Applicant") == "Second")
+            {
+                return RedirectToAction("Index", "JointAccount");
+            }
+            else
+            {
+                return RedirectToAction("Validate", "SecondEmail");
+            }
+            
+        }
+
 
         public ActionResult CreateExcel(string code)
         {
@@ -109,7 +193,7 @@ namespace PFD_OCBC_Group5.Controllers
                 //Add header row columns name in string list array
                 var headerRow = new List<string[]>()
                   {
-                    new string[] { "Verification Code Generated" }
+                    new string[] { "Verification Code", "TextRecognition", "FacialRecognition" }
                   };
 
                 // Get the header range
@@ -123,7 +207,7 @@ namespace PFD_OCBC_Group5.Controllers
                 worksheet.Cells[Range].LoadFromArrays(headerRow);
 
                 //lock all cells except inputs
-                worksheet.Protection.IsProtected = true;
+                worksheet.Protection.IsProtected = false;
                 worksheet.Cells["A2"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                 worksheet.Cells["A2"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
 
@@ -132,6 +216,8 @@ namespace PFD_OCBC_Group5.Controllers
 
                 //2 is rowNumber 1 is column number
                 worksheet.Cells[2, 1].Value = code;
+                worksheet.Cells["B2"].Value = "none";
+                worksheet.Cells["C2"].Value = "none";
 
                 //Save Excel file
                 excel.SaveAs(excelFile);
