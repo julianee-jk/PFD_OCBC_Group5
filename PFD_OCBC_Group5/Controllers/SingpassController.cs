@@ -340,7 +340,7 @@ namespace PFD_OCBC_Group5.Controllers
                     TempData.Put("firstUserAcc", account);
 
                     // Redirect to form if Singpass account exists
-                    return RedirectToAction("PersonInfo", "AccountForm");
+                    return RedirectToAction("SubmitOrSave", "AccountForm");
                 }
                 else
                 {
@@ -356,7 +356,7 @@ namespace PFD_OCBC_Group5.Controllers
                     newAccount.PostalCode = singpassInfo.PostalCode;
 
                     TempData.Put("firstUserAcc", newAccount);
-                    return RedirectToAction("PersonInfo", "AccountForm");
+                    return RedirectToAction("SubmitOrSave", "AccountForm");
                 }
             }
             else

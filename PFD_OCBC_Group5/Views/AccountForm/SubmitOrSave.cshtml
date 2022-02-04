@@ -196,7 +196,7 @@
             <div class="form-group">
                 <label asp-for="PostalCode" class="control-label"></label>
                 <input asp-for="PostalCode" class="form-control" />
-                <span asp-validation-for="PostalCode" class="text-danger"></span>
+                <span asp-validation-for="PostalCode" class="text-danger">@TempData["ValidationPostalCode"]</span>
             </div>
 
 
@@ -244,7 +244,7 @@
                 <div class="form-group" id="mailPostal">
                     <label asp-for="MailingPostalCode" class="control-label"></label>
                     <input id="mailPostalInput" asp-for="MailingPostalCode" class="form-control" />
-                    <span asp-validation-for="MailingPostalCode" class="text-danger"></span>
+                    <span asp-validation-for="MailingPostalCode" class="text-danger">@TempData["ValidationMailingPostalCode"]</span>
                 </div>
             }
         </div>
@@ -253,12 +253,12 @@
             <div class="form-group">
                 <label asp-for="MobileNumber" class="control-label"></label>
                 <input asp-for="MobileNumber" class="form-control" required />
-                <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                <span asp-validation-for="MobileNumber" class="text-danger">@TempData["ValidationMobileNumber"]</span>
             </div>
             <div class="form-group">
                 <label asp-for="HomeNumber" class="control-label"></label>
                 <input asp-for="HomeNumber" class="form-control" />
-                <span asp-validation-for="HomeNumber" class="text-danger"></span>
+                <span asp-validation-for="HomeNumber" class="text-danger">@TempData["ValidationHomeNumber"]</span>
             </div>
         </div>
         <div class="form-group" style="display: none;">
@@ -267,8 +267,8 @@
             <span asp-validation-for="AccountCreated" class="text-danger"></span>
         </div>
         <div class="buttons">
-            <input type="submit" value="Save" class="buttonstyle" />
-            <button type="submit" class="buttonstyle" asp-action="saveme">Submit</button>
+            <button type="submit" class="buttonstyle" asp-action="SubmitOrSave" asp-route-ID="1">Save</button>
+            <button type="submit" class="buttonstyle" asp-action="SubmitOrSave" asp-route-ID="2">Submit</button>
         </div>
     </form>
 </div>
