@@ -12,6 +12,7 @@ using FireSharp.Config;
 using FireSharp.Response;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net.Mail;
 
 namespace PFD_OCBC_Group5.Controllers
 {
@@ -47,6 +48,33 @@ namespace PFD_OCBC_Group5.Controllers
             jaView.ja = ja;
             jaView.firstName = firstUser.Name;
             jaView.secondName = secondUser.Name;
+
+            // Retrieve accId and relationship
+            string accId = HttpContext.Session.GetInt32("AccountID").ToString();
+
+            // Email Section
+            // Email body text
+            string messageBodyOwner = @"Dear Applicant," + "\n" +
+                                      "Congragulations! Your OCBC Joint-Account with " + secondUser.Name + " has been successfully created!" + "\n\n"
+                                    + "Your bank account details are as shown below:" + "\n"
+                                    + "Joint-account Account Number: " + ja.AccountNumber + "\n"
+                                    + "Joint-account Owner: " + firstUser.Name + "\n"
+                                    + "Joint-account Second Owner: " + secondUser.Name + "\n"
+                                    + "Relationship of Owner with Second Owner: " + ja.RelationshipToOwner + "\n\n"
+                                    + "Information in this email is confidential. It is intended solely for the person to whom it is addressed to. If you are not the intended recipient, you are not to disseminate, distribute or copy this communication. Please notify the sender and delete the message and any other record of it from your system immediately.";
+
+            string messageBodyJoint = @"Dear Applicant," + "\n" +
+                                      "Congragulations! Your OCBC Joint-Account with " + firstUser.Name + " has been successfully created!" + "\n\n"
+                                    + "Your bank account details are as shown below:" + "\n"
+                                    + "Joint-account Account Number: " + ja.AccountNumber + "\n"
+                                    + "Joint-account Owner: " + firstUser.Name + "\n"
+                                    + "Joint-account Second Owner: " + secondUser.Name + "\n"
+                                    + "Relationship of Owner with Second Owner: " + ja.RelationshipToOwner + "\n\n"
+                                    + "Information in this email is confidential. It is intended solely for the person to whom it is addressed to. If you are not the intended recipient, you are not to disseminate, distribute or copy this communication. Please notify the sender and delete the message and any other record of it from your system immediately.";
+
+            // Send Email to the two account holders that have just created the account
+            SendEmail("OCBC Joint-Account - Application Successful", messageBodyOwner, firstUser.Email);
+            SendEmail("OCBC Joint-Account - Application Successful", messageBodyJoint, secondUser.Email);
 
             return View(jaView);
         }
@@ -202,6 +230,28 @@ namespace PFD_OCBC_Group5.Controllers
             
             // Return the generated acc number
             return baseNum;
+        }
+
+        public static void SendEmail(string messageBody, string messageContent, string email)
+        {
+            MailAddress from = new MailAddress("ocbcpfdgroup5noreply@gmail.com");
+            MailAddress to = new MailAddress(email);
+            MailMessage message = new MailMessage(from, to);
+            message.Subject = messageBody;
+            message.Body = messageContent;
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+            client.Credentials = new System.Net.NetworkCredential("ocbcpfdgroup5noreply@gmail.com", "pfdgrp5123.");
+            client.EnableSsl = true;
+
+            try
+            {
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception caught in sending email(): {0}",
+                    ex.ToString());
+            }
         }
     }
 }

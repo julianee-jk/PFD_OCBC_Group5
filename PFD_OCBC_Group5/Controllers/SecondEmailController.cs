@@ -40,9 +40,6 @@ namespace PFD_OCBC_Group5.Controllers
                     if (HttpContext.Session.GetString("Type") == "NonSP")
                         secondPersonLink = "https://localhost:44382/NonSP/SubmitAccountInfo?currentUser=2&accId=" + accId + "&rel=" + secondEmail.RelationShipToApplicant;
 
-                    Debug.WriteLine(HttpContext.Session.GetString("Type"));
-                    Debug.WriteLine(secondPersonLink);
-
                     // Email body text
                     string messageBody = @"Dear user," + "\n" +
                                               "You have been invited to an OCBC Joint-Account as the second applicant." + "\n"
