@@ -30,7 +30,7 @@ namespace PFD_OCBC_Group5.Controllers
 
         private AccountDAL AccountContext = new AccountDAL();
 
-        private void AddStudentToFirebase(AccountFormModel account)
+        private void AddAccountHolderToFirebase(AccountFormModel account)
         {
             client = new FireSharp.FirebaseClient(config);
             var data = account;
@@ -119,197 +119,310 @@ namespace PFD_OCBC_Group5.Controllers
             }
         }
 
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SubmitAccountInfo(AccountFormModel account)
+        public ActionResult SubmitAccountInfo(AccountFormModel account, int ID)
         {
-            TempData["InvalidNRIC"] = "";
-
-            bool flag = false;
-
-            if (account.Occupation == null || account.PR == null || account.Gender == null || account.SelfEmployed == null || account.HomeAddress == null || account.PostalCode == null || account.Email == null || account.MobileNumber == null)
+            if (ID == 1)
             {
-                flag = true;
-            }
+                client = new FireSharp.FirebaseClient(config);
+                //retrieve from accountholder in firebase
+                FirebaseResponse response = client.Get("AccountHolder");
+                dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
+                var list = new List<AccountFormModel>();
 
-            client = new FireSharp.FirebaseClient(config);
-            FirebaseResponse response = client.Get("AccountHolder");
-            dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
+                //retrieve from singpass user in firebase
+                FirebaseResponse response2 = client.Get("SingpassUser");
+                dynamic data2 = JsonConvert.DeserializeObject<dynamic>(response2.Body);
+                var SingpassHolderList = new List<SingpassModel>();
+                var accExistInSP = false;
 
-            var list = new List<AccountFormModel>();
-            var accexist = false;
+                var flag = false;
 
-            if (data != null)
-            {
-                foreach (var item in data)
+                bool isNumber1 = true, isNumber2 = true, isNumber3 = true, isNumber4 = true;
+                int numericValue;
+                if (account.PostalCode != null)
                 {
-                    list.Add(JsonConvert.DeserializeObject<AccountFormModel>(((JProperty)item).Value.ToString()));
+                    isNumber1 = int.TryParse(account.PostalCode, out numericValue);
                 }
-            }
-
-            AccountFormModel accFormVerify = new AccountFormModel();
-
-            // only run this code if it is during the second applicant's applicant process
-            if (HttpContext.Session.GetString("Applicant") == "Second")
-            {
-                foreach (var accountForm in list)
+                if (account.MobileNumber != null)
                 {
-                    // find the first applicant's nric
-                    if (accountForm.AccountID == HttpContext.Session.GetInt32("FirstUserAccID"))
+                    isNumber2 = int.TryParse(account.MobileNumber, out numericValue);
+                }
+                if (account.HomeNumber != null)
+                {
+                    isNumber3 = int.TryParse(account.HomeNumber, out numericValue);
+                }
+                if (account.MailingPostalCode != null)
+                {
+                    isNumber4 = int.TryParse(account.MailingPostalCode, out numericValue);
+                }
+                if (!isNumber1 || !isNumber2 || !isNumber3 || !isNumber4)
+                {
+                    if (!isNumber1)
                     {
-                        // set the selected accountform object to the accformverify variable
-                        accFormVerify = accountForm;
-                        break;
+                        TempData["ValidationPostalCode"] = "Please input a number";
                     }
-                }
-
-                // verify that the second applicant's nric is not the same as the first applicant's. else display error message.
-                if (accFormVerify.NRIC == account.NRIC)
-                {
-                    // send error message not the same confirm
-                    TempData["InvalidNRIC"] = "The NRIC entered cannot be the same as the NRIC of the first applicant.";
+                    if (!isNumber2)
+                    {
+                        TempData["ValidationMobileNumber"] = "Please input a number";
+                    }
+                    if (!isNumber3)
+                    {
+                        TempData["ValidationHomeNumber"] = "Please input a number";
+                    }
+                    if (!isNumber4)
+                    {
+                        TempData["ValidationMailingPostalCode"] = "Please input a number";
+                    }
                     return View(account);
                 }
-            }
-            
-            foreach (var x in list)
-            {
-                if (x.NRIC == account.NRIC)
+
+                if (data != null)
                 {
-                    if (x.AccountCreated == "N")
+                    foreach (var item in data)
                     {
-                        accexist = true;
-                        account.UniqueID = x.UniqueID;
-                        account.AccountID = x.AccountID;
-                        account.AccountCreated = x.AccountCreated;
-                        break;
+                        list.Add(JsonConvert.DeserializeObject<AccountFormModel>(((JProperty)item).Value.ToString()));
                     }
                 }
-            }
 
-            if (!flag)
-            {
-                if (accexist)
+                if (data2 != null)
                 {
-                    client = new FireSharp.FirebaseClient(config);
-                    SetResponse setResponse = client.Set("AccountHolder/" + account.UniqueID, account);
-                }
-                else
-                {
-                    account.AccountID = list.Count + 1;
-                    account.AccountCreated = "N";
-                    AddStudentToFirebase(account);
-                }
-
-                /*
-                if (AccountContext.AccountExists(account.NRIC))
-                {
-                    //update account
-                    account.AccountCreated = "Y";
-                    AccountContext.Update(account);
-                }
-                else
-                {
-                    //create new account
-                    account.AccountCreated = "N";
-                    AccountContext.Add(account);
-                }*/
-
-                if (HttpContext.Session.GetString("Applicant") == "Second")
-                    HttpContext.Session.SetInt32("SecondUserAccID", account.AccountID);
-
-                HttpContext.Session.SetInt32("AccountID", account.AccountID);
-                return RedirectToAction("UploadPhoto", "NSPVerification");
-            }
-
-            return RedirectToAction("Index", "Home");
-        }
-
-        public ActionResult SaveAccountInfo(string nric)
-        {
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpPost]
-        public ActionResult SaveAccountInfo(AccountFormModel account)
-        {
-            client = new FireSharp.FirebaseClient(config);
-            //retrieve from accountholder in firebase
-            FirebaseResponse response = client.Get("AccountHolder");
-            dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
-            var list = new List<AccountFormModel>();
-
-            //retrieve from singpass user in firebase
-            FirebaseResponse response2 = client.Get("SingpassUser");
-            dynamic data2 = JsonConvert.DeserializeObject<dynamic>(response2.Body);
-            var SingpassHolderList = new List<SingpassModel>();
-            var accExistInSP = false;
-
-            var flag = false;
-
-            if (data != null)
-            {
-                foreach (var item in data)
-                {
-                    list.Add(JsonConvert.DeserializeObject<AccountFormModel>(((JProperty)item).Value.ToString()));
-                }
-            }
-
-            if (data2 != null)
-            {
-                foreach (var item in data2)
-                {
-                    SingpassHolderList.Add(JsonConvert.DeserializeObject<SingpassModel>(((JProperty)item).Value.ToString()));
-                }
-            }
-
-            foreach (var x in SingpassHolderList)
-            {
-                if (x.NRIC == account.NRIC)
-                {
-                    accExistInSP = true;
-                    break;
-                }
-                else
-                {
-                    accExistInSP = false;
-                }
-            }
-
-            foreach (var x in list)
-            {
-                if (x.NRIC == account.NRIC)
-                {
-                    if (x.AccountCreated == "N")
+                    foreach (var item in data2)
                     {
-                        flag = true;
-                        account.UniqueID = x.UniqueID;
-                        account.AccountID = x.AccountID;
-                        account.AccountCreated = x.AccountCreated;
-                        break;
+                        SingpassHolderList.Add(JsonConvert.DeserializeObject<SingpassModel>(((JProperty)item).Value.ToString()));
                     }
                 }
-            }
 
-            if (!accExistInSP)
-            {
-                if (flag)
+                foreach (var x in SingpassHolderList)
                 {
-                    client = new FireSharp.FirebaseClient(config);
-                    SetResponse setResponse = client.Set("AccountHolder/" + account.UniqueID, account);
+                    if (x.NRIC == account.NRIC)
+                    {
+                        accExistInSP = true;
+                        break;
+                    }
+                    else
+                    {
+                        accExistInSP = false;
+                    }
+                }
+
+                foreach (var x in list)
+                {
+                    if (x.NRIC == account.NRIC)
+                    {
+                        if (x.AccountCreated == "N")
+                        {
+                            flag = true;
+                            account.UniqueID = x.UniqueID;
+                            account.AccountID = x.AccountID;
+                            account.AccountCreated = x.AccountCreated;
+                            break;
+                        }
+                    }
+                }
+
+                if (!accExistInSP)
+                {
+                    if (flag)
+                    {
+                        client = new FireSharp.FirebaseClient(config);
+                        SetResponse setResponse = client.Set("AccountHolder/" + account.UniqueID, account);
+                    }
+                    else
+                    {
+                        account.AccountID = list.Count + 1;
+                        account.AccountCreated = "N";
+                        AddAccountHolderToFirebase(account);
+                    }
                 }
                 else
                 {
-                    account.AccountID = list.Count + 1;
-                    account.AccountCreated = "N";
-                    AddStudentToFirebase(account);
+                    TempData["ValidationNRIC"] = "NRIC Exists in Singpass";
+                    return View(account);
                 }
+                return RedirectToAction("Index", "Home");
             }
             else
             {
-                Debug.WriteLine("NRIC exists in singpass");
+                TempData["InvalidNRIC"] = "";
+
+                bool flag = false;
+
+                if (account.Occupation == null || account.PR == null || account.Gender == null || account.SelfEmployed == null || account.HomeAddress == null || account.PostalCode == null || account.Email == null || account.MobileNumber == null)
+                {
+                    flag = true;
+                }
+
+                client = new FireSharp.FirebaseClient(config);
+                FirebaseResponse response = client.Get("AccountHolder");
+                dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
+
+                //retrieve from singpass user in firebase
+                FirebaseResponse response2 = client.Get("SingpassUser");
+                dynamic data2 = JsonConvert.DeserializeObject<dynamic>(response2.Body);
+                var SingpassHolderList = new List<SingpassModel>();
+
+                var accExistInSP = false;
+                var list = new List<AccountFormModel>();
+                var accexist = false;
+
+                bool isNumber1 = true, isNumber2 = true, isNumber3 = true, isNumber4 = true;
+                int numericValue;
+                if (account.PostalCode != null)
+                {
+                    isNumber1 = int.TryParse(account.PostalCode, out numericValue);
+                }
+                if (account.MobileNumber != null)
+                {
+                    isNumber2 = int.TryParse(account.MobileNumber, out numericValue);
+                }
+                if (account.HomeNumber != null)
+                {
+                    isNumber3 = int.TryParse(account.HomeNumber, out numericValue);
+                }
+                if (account.MailingPostalCode != null)
+                {
+                    isNumber4 = int.TryParse(account.MailingPostalCode, out numericValue);
+                }
+                if (!isNumber1 || !isNumber2 || !isNumber3 || !isNumber4)
+                {
+                    if (!isNumber1)
+                    {
+                        TempData["ValidationPostalCode"] = "Please input a number";
+                    }
+                    if (!isNumber2)
+                    {
+                        TempData["ValidationMobileNumber"] = "Please input a number";
+                    }
+                    if (!isNumber3)
+                    {
+                        TempData["ValidationHomeNumber"] = "Please input a number";
+                    }
+                    if (!isNumber4)
+                    {
+                        TempData["ValidationMailingPostalCode"] = "Please input a number";
+                    }
+                    return View(account);
+                }
+
+                if (data2 != null)
+                {
+                    foreach (var item in data2)
+                    {
+                        SingpassHolderList.Add(JsonConvert.DeserializeObject<SingpassModel>(((JProperty)item).Value.ToString()));
+                    }
+                }
+
+                foreach (var x in SingpassHolderList)
+                {
+                    if (x.NRIC == account.NRIC)
+                    {
+                        accExistInSP = true;
+                        break;
+                    }
+                    else
+                    {
+                        accExistInSP = false;
+                    }
+                }
+
+                if (data != null)
+                {
+                    foreach (var item in data)
+                    {
+                        list.Add(JsonConvert.DeserializeObject<AccountFormModel>(((JProperty)item).Value.ToString()));
+                    }
+                }
+
+                AccountFormModel accFormVerify = new AccountFormModel();
+
+                // only run this code if it is during the second applicant's applicant process
+                if (HttpContext.Session.GetString("Applicant") == "Second")
+                {
+                    foreach (var accountForm in list)
+                    {
+                        // find the first applicant's nric
+                        if (accountForm.AccountID == HttpContext.Session.GetInt32("FirstUserAccID"))
+                        {
+                            // set the selected accountform object to the accformverify variable
+                            accFormVerify = accountForm;
+                            break;
+                        }
+                    }
+
+                    // verify that the second applicant's nric is not the same as the first applicant's. else display error message.
+                    if (accFormVerify.NRIC == account.NRIC)
+                    {
+                        // send error message not the same confirm
+                        TempData["InvalidNRIC"] = "The NRIC entered cannot be the same as the NRIC of the first applicant.";
+                        return View(account);
+                    }
+                }
+
+                foreach (var x in list)
+                {
+                    if (x.NRIC == account.NRIC)
+                    {
+                        if (x.AccountCreated == "N")
+                        {
+                            accexist = true;
+                            account.UniqueID = x.UniqueID;
+                            account.AccountID = x.AccountID;
+                            account.AccountCreated = x.AccountCreated;
+                            break;
+                        }
+                    }
+                }
+
+                if (!flag)
+                {
+                    if (!accExistInSP)
+                    {
+                        if (accexist)
+                        {
+                            client = new FireSharp.FirebaseClient(config);
+                            SetResponse setResponse = client.Set("AccountHolder/" + account.UniqueID, account);
+                        }
+                        else
+                        {
+                            account.AccountID = list.Count + 1;
+                            account.AccountCreated = "N";
+                            AddAccountHolderToFirebase(account);
+                        }
+
+                        /*
+                        if (AccountContext.AccountExists(account.NRIC))
+                        {
+                            //update account
+                            account.AccountCreated = "Y";
+                            AccountContext.Update(account);
+                        }
+                        else
+                        {
+                            //create new account
+                            account.AccountCreated = "N";
+                            AccountContext.Add(account);
+                        }*/
+
+                        if (HttpContext.Session.GetString("Applicant") == "Second")
+                            HttpContext.Session.SetInt32("SecondUserAccID", account.AccountID);
+
+                        HttpContext.Session.SetInt32("AccountID", account.AccountID);
+                        return RedirectToAction("UploadPhoto", "NSPVerification");
+                    }
+                    else
+                    {
+                        TempData["ValidationNRIC"] = "NRIC Exists in Singpass";
+                        return View(account);
+                    }
+
+                }
+
+                return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult SendContinueEmail()

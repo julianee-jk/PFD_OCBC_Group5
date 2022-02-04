@@ -13,7 +13,7 @@
             <div class="form-group">
                 <label asp-for="NRIC" class="control-label"></label>
                 <input asp-for="NRIC" class="form-control" required />
-                <span asp-validation-for="NRIC" class="text-danger">@TempData["InvalidNRIC"]</span>
+                <span asp-validation-for="NRIC" class="text-danger">@TempData["InvalidNRIC"]@TempData["ValidationNRIC"]</span>
             </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -197,7 +197,7 @@
             <div class="form-group">
                 <label asp-for="PostalCode" class="control-label"></label>
                 <input asp-for="PostalCode" class="form-control" />
-                <span asp-validation-for="PostalCode" class="text-danger"></span>
+                <span asp-validation-for="PostalCode" class="text-danger">@TempData["ValidationPostalCode"]</span>
             </div>
 
 
@@ -245,7 +245,7 @@
                 <div class="form-group" id="mailPostal">
                     <label asp-for="MailingPostalCode" class="control-label"></label>
                     <input id="mailPostalInput" asp-for="MailingPostalCode" class="form-control" />
-                    <span asp-validation-for="MailingPostalCode" class="text-danger"></span>
+                    <span asp-validation-for="MailingPostalCode" class="text-danger">@TempData["ValidationMailingPostalCode"]</span>
                 </div>
             }
         </div>
@@ -254,12 +254,12 @@
             <div class="form-group">
                 <label asp-for="MobileNumber" class="control-label"></label>
                 <input asp-for="MobileNumber" class="form-control" required />
-                <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                <span asp-validation-for="MobileNumber" class="text-danger">@TempData["ValidationMobileNumber"]</span>
             </div>
             <div class="form-group">
                 <label asp-for="HomeNumber" class="control-label"></label>
                 <input asp-for="HomeNumber" class="form-control" />
-                <span asp-validation-for="HomeNumber" class="text-danger"></span>
+                <span asp-validation-for="HomeNumber" class="text-danger">@TempData["ValidationHomeNumber"]</span>
             </div>
         </div>
         <div class="form-group" style="display: none;">
@@ -268,7 +268,15 @@
             <span asp-validation-for="AccountCreated" class="text-danger"></span>
         </div>
         <div class="buttons">
-            <button type="submit" class="buttonstyle" asp-action="SubmitAccountInfo">Submit</button>
+            @if (Context.Session.GetString("Applicant") != "Second")
+            {
+                <button type="submit" class="buttonstyle" asp-action="SubmitAccountInfo" asp-route-ID="1">Save</button>
+                <button type="submit" class="buttonstyle" asp-action="SubmitAccountInfo" asp-route-ID="2">Submit</button>
+            }
+            else
+            {
+                <button type="submit" class="buttonstyle" asp-action="SubmitAccountInfo">Submit</button>
+            }
         </div>
     </form>
 </div>
